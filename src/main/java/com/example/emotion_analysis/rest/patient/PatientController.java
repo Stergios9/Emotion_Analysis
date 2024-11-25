@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 @RequestMapping("/patients")
@@ -21,9 +19,6 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
-    @Autowired
-    private PatientRepository patientRepository;
-
 
     // *************************************** GET METHODS **************************************** //
 

@@ -2,7 +2,7 @@ package com.example.emotion_analysis.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+/*import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +19,10 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
 
+ */
+public class WebSecurityConfig {
+/*
     @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
 
@@ -55,7 +57,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")    // Only ADMIN can PUT
                         .requestMatchers(HttpMethod.DELETE, "/patients/delete/id/*").permitAll() // Only ADMIN can DELETE
                         .requestMatchers("/public/**").permitAll()  // Allow public endpoints without authentication
-                        .requestMatchers("/**/*.html").permitAll()
+           DELETE '/' IN : *(/)/*.html")             .requestMatchers("/**//*.html").permitAll()
                         .anyRequest().authenticated()  // All other endpoints require authentication
                 )
                 .formLogin(login -> login
@@ -78,6 +80,6 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);  // Apply this configuration to all endpoints
         return source;
     }
-
+    */
 }
 
