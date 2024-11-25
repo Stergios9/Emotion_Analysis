@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Top 5 Most Frequent Sentiments</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #chart-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<h1>Top 5 Most Frequent Sentiments</h1>
+<div id="chart-container">
+    <canvas id="sentimentChart"></canvas>
+</div>
+
+<script th:inline="javascript">
+    /* Extract data from the Thymeleaf model */
+    const sentimentLabels = [[${results}]].map(item => item[0]); // Sentiment names
+    const sentimentFrequencies = [[${results}]].map(item => item[1]); // Frequencies
+
+    /* Create the histogram using Chart.js */
+    const ctx = document.getElementById('sentimentChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // Bar chart for histogram
+        data: {
+            labels: sentimentLabels, // X-axis labels
+            datasets: [{
+                label: 'Frequency of Sentiments',
+                data: sentimentFrequencies, // Y-axis values
+                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Bar color
+                borderColor: 'rgba(75, 192, 192, 1)', // Bar border
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true, // Ensure Y-axis starts at 0
+                    title: {
+                        display: true,
+                        text: 'Frequency'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

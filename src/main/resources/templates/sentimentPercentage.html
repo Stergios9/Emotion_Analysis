@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Percentage by Gender</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+<h2>Sentiment Percentage by Gender</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Gender</th>
+        <th>Sentiment</th>
+        <th>Percentage (%)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${sentimentData}">
+        <td th:text="${row[0]}"></td> <!-- Gender -->
+        <td th:text="${row[1]}"></td> <!-- Sentiment -->
+        <td th:text="${row[2]}"></td> <!-- Percentage -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

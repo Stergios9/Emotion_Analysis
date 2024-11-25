@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Most Common Sentiment by Gender</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+<h2>Most Common Sentiment by Gender</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Gender</th>
+        <th>Sentiment</th>
+        <th>Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the data -->
+    <tr th:each="row : ${sentimentData}">
+        <td th:text="${row[0]}"></td> <!-- Gender -->
+        <td th:text="${row[1]}"></td> <!-- Sentiment -->
+        <td th:text="${row[2]}"></td> <!-- Count -->
+    </tr>
+    </tbody>
+</table>
+
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

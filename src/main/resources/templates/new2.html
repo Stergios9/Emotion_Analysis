@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Αποτέλεσμα Ανάλυσης</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/analysis.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Analysis Result</h1>
+    <p><strong>Name:</strong> <span th:text="${firstName}"></span></p>
+    <p><strong>LastName:</strong> <span th:text="${lastName}"></span></p>
+    <p><strong>Predicted sentiment:</strong> <span th:text="${emotion}"></span></p>
+
+    <h2>Medical Diagnosis</h2>
+    <p>
+        Dear <span th:text="${firstName}"></span>,
+        <span th:text="${diagnosis}"></span>
+    </p>
+
+    <h2>Relaxation Techniques</h2>
+    <p>
+        <span th:text="${techniques}"></span>
+    </p>
+
+    <h2>Recommended Health Professionals</h2>
+    <ul>
+        <li th:each="professional : ${professionals}">
+            <span class="label">Name:</span><span class="value" th:text="${professional.name}"></span>
+            <span class="label">Specialization:</span><span class="value" th:text="${professional.specialization}"></span>
+            <span class="label">Phone:</span><span class="value" th:text="${professional.getPhone()}"></span>
+            <span class="label">Email:</span><span class="value" th:text="${professional.getEmail()}"></span>
+            <span class="label">City:</span><span class="value" th:text="${professional.getLocation().getCity()}"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

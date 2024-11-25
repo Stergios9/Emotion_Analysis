@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+/* Table Styling */
+table {
+    width: 90%; /* Increased width */
+    margin: 0 auto; /* Center the table */
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+    background-color: #fff;
+}
+
+th, td {
+    padding: 15px; /* Increase cell padding */
+    text-align: left;
+    border: 1px solid #ddd; /* Add border to cells */
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row colors */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
+}
+
+/* Optional: Footer styling */
+footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+}

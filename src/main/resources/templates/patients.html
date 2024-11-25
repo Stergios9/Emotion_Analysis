@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+<h1 style="text-align: center;">List of All Patients</h1>
+
+<!-- Display a custom message if it exists -->
+<div class="message" th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<!-- Display the list of patients in a table -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Location</th>
+        <th>Comment</th>
+        <th>Registration Day</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Show "No patients found" if the list is empty -->
+    <tr th:if="${#lists.isEmpty(patients)}">
+        <td colspan="7" class="no-patients">No patients found</td>
+    </tr>
+    <!-- Loop through each patient -->
+    <tr th:each="patient : ${patients}">
+        <td th:text="${patient.id}"></td>
+        <td th:text="${patient.firstName}"></td>
+        <td th:text="${patient.lastName}"></td>
+        <td th:text="${patient.gender}"></td>
+        <td th:text="${patient.location.city}"></td>
+        <td th:text="${patient.comment}"></td>
+        <td th:text="${patient.getRegistrationDay()}"></td>
+    </tr>
+    </tbody>
+</table>
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+</head>
+<body>
+
+<div class="patient-details">
+    <h1>Patient Details</h1>
+
+    <!-- Display message if there is one -->
+    <div th:if="${message}" class="message">
+        <p th:text="${message}"></p>
+    </div>
+
+    <!-- Patient details table -->
+    <table th:if="${patient != null}">
+        <tbody>
+        <tr>
+            <th>ID</th>
+            <td th:text="${patient.id}"></td>
+        </tr>
+        <tr>
+            <th>First Name</th>
+            <td th:text="${patient.firstName}"></td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td th:text="${patient.lastName}"></td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td th:text="${patient.gender}"></td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td th:text="${patient.location.city}"></td>
+        </tr>
+        <tr>
+            <th>Comment</th>
+            <td th:text="${patient.comment}"></td>
+        </tr>
+        <tr>
+            <th>Registration Day</th>
+            <td th:text="${patient.getRegistrationDay()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

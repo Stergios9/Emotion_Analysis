@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Psychological Support</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #70a6db; /* Light background for the content */
+        }
+        .title-container {
+            text-align: center;
+            background-color: #5f9ea0; /* Background color for the title area */
+            color: white;
+            padding: 20px;
+            margin: 0; /* Remove default margin */
+        }
+        .title-container h1 {
+            margin: 0; /* Remove default margin from h1 */
+            font-size: 2.5em;
+        }
+        .background-container {
+            position: relative;
+            width: 100%;
+            height: 300px; /* Height of the image - adjust as needed */
+            /*overflow: hidden; */
+            background-image: url("/pic3.jpg");
+            background-size: cover;
+            margin: 0; /* Remove default margin */
+        }
+        .background-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the container without distortion */
+        }
+        .form-container {
+            margin: 20px auto; /* Center the form container and add space around it */
+            width: 80%; /* Increased width for the form container */
+            padding: 20px;
+            background-color: #f0f8ff; /* Background for the form */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Shadow for the form */
+            text-align: left; /* Align text to the left */
+            min-height: 500px; /* Increased form height */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Κεντράρισμα στοιχείων φόρμας */
+            gap: 15px; /* Διάστημα μεταξύ στοιχείων φόρμας */
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%; /* Full width for form group */
+        }
+        .form-group label {
+            font-size: 1.2em; /* Font size for labels */
+            font-weight: 600; /* Bold labels */
+            color: #333; /* Darker text color */
+            width: 200px; /* Fixed label width for alignment */
+            text-align: left; /* Align text to the left inside the label */
+        }
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%; /* Πλήρες πλάτος εισαγωγής */
+            background-color: #f9f9f9; /* Ανοιχτό φόντο για τα inputs */
+            border: 1px solid #ddd; /* Ανοιχτό περίγραμμα */
+            border-radius: 5px; /* Στρογγυλεμένες γωνίες */
+            padding: 10px;
+            font-size: 1em;
+        }
+        textarea {
+            height: 150px; /* Adjust height of text area */
+        }
+        button {
+            background-color: #5f9ea0; /* Πράσινο φόντο */
+            color: white; /* Λευκό κείμενο */
+            border: none;
+            border-radius: 5px; /* Στρογγυλεμένες γωνίες */
+            padding: 10px 20px; /* Εσωτερικό padding για το κουμπί */
+            font-size: 1.5em; /* Μέγεθος γραμματοσειράς */
+            cursor: pointer; /* Δείκτης χεριού κατά το hover */
+            transition: background-color 0.3s; /* Ομαλή αλλαγή χρώματος κατά το hover */
+            margin-top: 20px; /* Διάστημα πάνω από το κουμπί για να το ξεχωρίσουμε από το textarea */
+            align-self: center; /* Κεντράρισμα του κουμπιού */
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                width: 95%; /* Full width on smaller screens */
+            }
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .form-group label,
+            .form-group input[type="text"],
+            .form-group select,
+            .form-group textarea {
+                width: 100%; /* Full width on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="title-container">
+    <h1>Online Psychological Support</h1>
+</div>
+<div class="background-container"></div>
+
+<div class="form-container">
+    <form action="/medicalDiagnosis" method="post">
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <!-- Thymeleaf code to populate options -->
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <select id="location" name="location" required>
+                <option value="" disabled selected>Select your location</option>
+                <option value="Thessaloniki">Thessaloniki</option>
+                <option value="Athens">Athens</option>
+                <option value="Crete">Crete</option>
+                <option value="Serres">Serres</option>
+                <option value="Kavala">Kavala</option>
+                <option value="Patra">Patra</option>
+                <option value="Rhodes">Rhodes</option>
+                <option value="Iwannina">Iwannina</option>
+                <option value="Zakinthos">Zakinthos</option>
+                <option value="Larisa">Larisa</option>
+                <option value="Santorini">Santorini</option>
+                <option value="Piraeus">Piraeus</option>
+                <option value="Trikala">Trikala</option>
+                <option value="Ithaki">Ithaki</option>
+                <option value="Sparta">Sparta</option>
+                <option value="Salamina">Salamina</option>
+                <option value="Korinthos">Korinthos</option>
+                <option value="Cyprous">Cyprous</option>
+                <option value="Chalkidiki">Chalkidiki</option>
+                <option value="Komotini">Komotini</option>
+                <option value="Alexandroupoli">Alexandroupoli</option>
+                <option value="Katerini">Katerini</option>
+                <option value="Volos">Volos</option>
+                <option value="Lamia">Lamia</option>
+                <option value="Karditsa">Karditsa</option>
+                <option value="Kozani">Kozani</option>
+                <option value="Xanthi">Xanthi</option>
+                <option value="Didymoteicho">Didymoteicho</option>
+                <option value="Orestiada">Orestiada</option>
+                <option value="Tripoli">Tripoli</option>
+                <option value="Kalamata">Kalamata</option>
+                <option value="Nafplio">Nafplio</option>
+                <option value="Arta">Arta</option>
+                <option value="Gaudos">Gaudos</option>
+                <option value="Nigrita">Nigrita</option>
+                <option value="Syros">Syros</option>
+
+
+            </select>
+        </div>
+
+        <!--
+      <div class="form-group">
+          <label for="location">Location:</label>
+          <select id="location" name="location" required>
+              <option value="" disabled selected>Select your location</option>
+
+              <option th:each="location : ${locations}"
+                      th:value="${location.city}"
+                      th:text="${location.city}">
+              </option>
+
+          </select>
+      </div>
+      -->
+        <div class="form-group">
+            <label for="comment">Share Your Emotions:</label>
+            <textarea id="comment" name="comment" placeholder="Describe the emotions that most affect your daily life" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+</body>
+</html>
