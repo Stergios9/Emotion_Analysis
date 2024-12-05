@@ -1,0 +1,3 @@
+CMD COMMANDS FOR HANDLING PHONE BY PC
+1) navigate to "scrcpy" folder (inside) and double click on exe
+2) or run the command "scrcpy -d"

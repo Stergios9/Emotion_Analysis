@@ -37,28 +37,32 @@ body {
     padding: 10px;
     border-radius: 5px;
 }
-
 .menu {
     display: none;
     position: absolute;
     top: 60px;
     left: 20px;
-    background-color: #5f9ea0;
+    background-color: rgba(95, 158, 160, 0.95);  /* Transparent teal */
     border-radius: 5px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     padding: 10px;
+    z-index: 10;
+    border: 2px solid #4a8b8d;  /* Optional border */
 }
 
 .menu a {
     display: block;
     color: white;
     text-decoration: none;
-    padding: 10px 0;
+    padding: 10px 15px;
+    font-size: 1.2em;
 }
 
 .menu a:hover {
     background-color: #4a8b8d;
+    color: #ffebcd;
 }
+
 
 .container {
     margin: 50px auto;

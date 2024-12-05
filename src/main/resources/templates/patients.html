@@ -6,13 +6,28 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
 </head>
 <body>
-<h1 style="text-align: center;">List of All Patients</h1>
 
-<!-- Display a custom message if it exists -->
-<div class="message" th:if="${message}">
-    <p th:text="${message}"></p>
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="/patients">All Patients</a> <!-- Link to call the controller method -->
+            <a href="/statistics.html">Statistics</a>  <!-- Example existing link -->
+        </div>
+    </div>
+    <h1 style="text-align: center;">List of All Patients</h1>
 </div>
 
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+<br>
 <!-- Display the list of patients in a table -->
 <table>
     <thead>

@@ -45,7 +45,7 @@ public class Patient {
     private Set<Sentiment> sentiments = new HashSet<>(); // Initialize with an empty Set
 
     // New OneToOne relationship with User
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")  // Foreign key reference to User
     private User user;
 
@@ -60,19 +60,10 @@ public class Patient {
         this.comment = comment;
         this.registration_day = registration_day;
         this.sentiments = sentiments;
+        this.user = new User();
+        this.user.setId(1);
     }
 
-    public Patient(String firstName, String lastName, int age, String gender, String comment, LocalDateTime registration_day, Location location, Set<Sentiment> sentiments, User user) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.gender = gender;
-        this.comment = comment;
-        this.registration_day = registration_day;
-        this.location = location;
-        this.sentiments = sentiments;
-        this.user = user;
-    }
     // Getters and Setters
 
     public int getId() {

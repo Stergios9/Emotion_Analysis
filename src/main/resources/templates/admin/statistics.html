@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics</title>
+    <link rel="stylesheet" type="text/css" href="css/hum.css" />
+    <style>
+
+        .background-container {
+            position: relative;
+            width: 100%;  /* Adjust for full width */
+            height: 500px;  /* Increase height */
+            background-image: url("/images/pic3.jpg");  /* Correct relative path */
+            background-size: cover;  /* Cover entire container */
+            background-position: center;  /* Center the image */
+            background-repeat: no-repeat;  /* Prevent tiling */
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+
+    </div>
+</div>
+
+<div class="background-container"></div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+
+</body>
+</html>

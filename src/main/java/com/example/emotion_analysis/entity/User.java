@@ -2,6 +2,8 @@ package com.example.emotion_analysis.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -21,8 +23,8 @@ public class User {
     private String password;
 
     // OneToOne relationship with Patient
-    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
-    private Patient patient;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
+    private List<Patient> patients; // Use a List to hold the patients associated with this user
 
     // Constructors
     public User() {}
@@ -65,11 +67,11 @@ public class User {
         this.password = password;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public List<Patient> getPatients() {
+        return patients;
+    }
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
 }
