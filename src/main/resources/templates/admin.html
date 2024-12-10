@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics</title>
-  <link rel="stylesheet" type="text/css" href="css/hum.css" />
+  <link rel="stylesheet" type="text/css" href="../static/css/hum.css" />
   <style>
     .background-container {
       position: relative;
@@ -25,7 +25,7 @@
     <button onclick="toggleMenu()">☰</button>
     <div class="menu" id="menu-content">
       <a href="/patients">All Patients</a> <!-- Link to call the controller method -->
-      <a href="/statistics.html">Statistics</a>  <!-- Example existing link -->
+      <a href="/statistics">Statistics</a>  <!-- Example existing link -->
     </div>
   </div>
 </div>
@@ -39,6 +39,8 @@
     menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
   }
 </script>
-
+<footer>
+  &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
 </body>
 </html>

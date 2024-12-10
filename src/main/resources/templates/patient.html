@@ -8,13 +8,35 @@
 </head>
 <body>
 
-<div class="patient-details">
-    <h1>Patient Details</h1>
-
-    <!-- Display message if there is one -->
-    <div th:if="${message}" class="message">
-        <p th:text="${message}"></p>
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="index">MEDICAL DIAGNOSIS</a>
+            <a href="/calendar">CALENDAR</a>
+            <a href="/calendar2">APPOITMENTS</a>
+            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/patients">PATIENTS</a> <!-- Link to call the controller method -->
+            <a href="/statistics">STATS</a>  <!-- Example existing link -->
+            <a href="/logout">LOGOUT</a>
+            <!-- Example existing link -->
+        </div>
     </div>
+    <h1 style="text-align: center;">Psychological Insights Platform</h1>
+</div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+<br>
+
+<div class="patient-details">
+    <h1>Patients</h1>
 
     <!-- Patient details table -->
     <table th:if="${patient != null}">

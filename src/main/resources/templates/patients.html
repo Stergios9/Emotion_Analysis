@@ -7,17 +7,22 @@
 </head>
 <body>
 
-
 <!-- Header Container with Title -->
 <div class="header-container">
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/patients">All Patients</a> <!-- Link to call the controller method -->
-            <a href="/statistics.html">Statistics</a>  <!-- Example existing link -->
+            <a href="index">MEDICAL DIAGNOSIS</a>
+            <a href="/calendar">CALENDAR</a>
+            <a href="/calendar2">APPOITMENTS</a>
+            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/patients">PATIENTS</a> <!-- Link to call the controller method -->
+            <a href="/statistics">STATS</a>  <!-- Example existing link -->
+            <a href="/logout">LOGOUT</a>
+            <!-- Example existing link -->
         </div>
     </div>
-    <h1 style="text-align: center;">List of All Patients</h1>
+    <h1 style="text-align: center;">Psychological Insights Platform</h1>
 </div>
 
 <!-- JavaScript for Menu Toggle -->
@@ -28,7 +33,8 @@
     }
 </script>
 <br>
-<!-- Display the list of patients in a table -->
+
+<h1>Patients</h1>
 <table>
     <thead>
     <tr>

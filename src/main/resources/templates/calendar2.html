@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar</title>
+  <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/calendar.css}" />-->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+
+
+<!-- Header Container with Title -->
+<div class="header-container">
+  <div class="hamburger-menu">
+    <button onclick="toggleMenu()">☰</button>
+    <div class="menu" id="menu-content">
+      <a href="/welcome">HOME</a>
+      <a href="/employees">ROSTER</a>
+      <a href="/calendar">CALENDAR</a>
+      <a href="/logout">LOGOUT</a>
+
+
+      <!-- Example existing link -->
+    </div>
+  </div>
+  <h1 style="text-align: center;">CALENDAR</h1>
+</div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("menu-content");
+    menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+  }
+</script>
+<br>
+<div class="calendar">
+  <div class="calendar-header">
+    <button id="prev-month" onclick="changeMonth(-1)">&#8592; Previous</button>
+    <h2 id="month-year"></h2>
+    <button id="next-month" onclick="changeMonth(1)">Next &#8594;</button>
+  </div>
+  <table class="calendar-table">
+    <thead>
+    <tr>
+      <th>Sun</th>
+      <th>Mon</th>
+      <th>Tue</th>
+      <th>Wed</th>
+      <th>Thu</th>
+      <th>Fri</th>
+      <th>Sat</th>
+    </tr>
+    </thead>
+    <tbody id="calendar-days">
+    <!-- Rows of days will be dynamically added here -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal for displaying notes -->
+<div id="note-modal" class="modal">
+  <div class="modal-content">
+    <span id="close-modal" class="close">&times;</span>
+    <h3>Notes for <span id="note-date"></span></h3>
+    <div id="note-content"></div>
+  </div>
+</div><!-- Link to your script -->
+<script src="/css/calendar2.js"></script>
+
+<footer>
+  &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+    <style>
+        /* Style for the image container */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto; /* Adds space around the container */
+            height: 90vh; /* 90% of the viewport height */
+            overflow: hidden; /* Ensures the image doesn't exceed container bounds */
+        }
+
+        /* Style for the image itself */
+        .image-container img {
+            max-height: 100%; /* Ensures the image scales properly */
+            max-width: 100%;  /* Ensures the image scales properly */
+            object-fit: cover; /* Ensures the image fills the container while maintaining aspect ratio */
+            border-radius: 10px; /* Optional: Adds rounded corners */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="index">MEDICAL DIAGNOSIS</a>
+            <a href="/calendar">CALENDAR</a>
+            <a href="/calendar2">APPOINTMENTS</a>
+            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/patients">PATIENTS</a>
+            <a href="/statistics">STATS</a>
+            <a href="/logout">LOGOUT</a>
+        </div>
+    </div>
+    <h1 style="text-align: center;">Psychological Insights Platform</h1>
+</div>
+
+<!-- Display error message if login fails -->
+<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+<!-- Image Container -->
+<div class="image-container">
+    <img src="images/page7.jpg" alt="Psychological Insights" />
+</div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

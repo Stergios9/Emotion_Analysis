@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="/calendar">CALENDAR</a>
+            <a href="/calendar2">APPOITMENTS</a>
+            <a href="/statistics">STATISTICS</a>
+            <a href="/logout">LOGOUT</a>
+            <!-- Example existing link -->
+        </div>
+    </div>
+    <h1 style="text-align: center;">Psychological Insights Platform</h1>
+</div>
+
+<!-- Display error message if login fails -->
+<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,8 +1,9 @@
 package com.example.emotion_analysis.rest.patient;
 
-import com.example.emotion_analysis.dao.PatientRepository;
 import com.example.emotion_analysis.entity.Patient;
+import com.example.emotion_analysis.entity.User;
 import com.example.emotion_analysis.service.patient.PatientService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,75 +24,125 @@ public class PatientController {
     // *************************************** GET METHODS **************************************** //
 
     @GetMapping
-    public String getAllPatients(Model model) {
-        List<Patient> allPatients = patientService.findAllPatients();
-        model.addAttribute("patients", allPatients); // Προσθήκη της λίστας στο μοντέλο
-        return "patients"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+    public String getAllPatients(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Patient> allPatients = patientService.findAllPatients();
+            model.addAttribute("patients", allPatients); // Προσθήκη της λίστας στο μοντέλο
+            return "patients"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+        }
+        model.addAttribute("error", "Please login");
+        return "loginForm";
     }
 
     @GetMapping("/id/{patientId}")
-    public String getPatientById(@PathVariable("patientId") int patientId, Model model) {
-
-        if (patientId <= 0) {
-            throw new RuntimeException("\n\n\n*** Give a valid patient id ***\n\n\n");
-        }
+    public String getPatientById(@PathVariable("patientId") int patientId, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
         Patient tempPatient = patientService.findById(patientId);
-        if (tempPatient == null) {
-            model.addAttribute("error", "The patient does not exist");
-            return "error";
-        }
-        model.addAttribute("patient", tempPatient);
-        return "patient";
-    }
-
-    @GetMapping("/city/{city}")
-    public String getPatientByCity(@PathVariable("city") String city, Model model) {
-        List<Patient> patientsByCity = new ArrayList<>();
-        List<Patient> allPatients = patientService.findAllPatients();
-
-        for (Patient patient : allPatients) {
-            if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
-                patientsByCity.add(patient);
+        if (user != null) {
+            if (patientId <= 0) {
+                model.addAttribute("error", "Use only positive numbers for patient id");
+                return "welcome";
             }
+            if (tempPatient == null) {
+                model.addAttribute("error", "The patient does not exist");
+                return "welcome";
+            }
+            model.addAttribute("patient", tempPatient);
+            return "patient";
         }
-        if (patientsByCity.isEmpty()) {
-            model.addAttribute("error", "No patients found in the specified city.");
-            return "error";
-        }
-        model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
-        return "patients";  // The name of the page that displays the list of patients by city
+        model.addAttribute("error", "Please login");
+        return "loginForm";
     }
+
+//    @GetMapping("/city/{city}")
+//    public String getPatientByCity(@PathVariable("city") String city, HttpSession session, Model model) {
+//        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+//        if (user != null) {
+//            List<Patient> patientsByCity = new ArrayList<>();
+//            List<Patient> allPatients = patientService.findAllPatients();
+//
+//            for (Patient patient : allPatients) {
+//                if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
+//                    patientsByCity.add(patient);
+//                }
+//            }
+//            if (patientsByCity.isEmpty()) {
+//                model.addAttribute("error", "No patients found in this city.");
+//                return "welcome";
+//            }
+//            model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
+//            return "patients";  // The name of the page that displays the list of patients by city
+//        }
+//        model.addAttribute("error", "Please login");
+//        return "loginForm";
+//    }
+
+@GetMapping("/city/{city}")
+public String getPatientByCity(@PathVariable("city") String city, Model model) {
+    List<Patient> patientsByCity = new ArrayList<>();
+    List<Patient> allPatients = patientService.findAllPatients();
+
+    for (Patient patient : allPatients) {
+        if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
+            patientsByCity.add(patient);
+        }
+    }
+    if (patientsByCity.isEmpty()) {
+        model.addAttribute("error", "No patients found in the specified city.");
+        return "error";
+    }
+    model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
+    return "patients";  // The name of the page that displays the list of patients by city
+}
 
     @GetMapping("/sentiment/{description}")
-    public String getPatientsBySentiment(@PathVariable("description") String description, Model model) {
-        List<Patient> patients = patientService.findPatientsBySentiment(description);
+    public String getPatientsBySentiment(@PathVariable("description") String description, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Patient> patients = patientService.findPatientsBySentiment(description);
 
-        if (patients.isEmpty()) {
-            model.addAttribute("message", "\n\n*****No patients found with " + description + " sentiment.*****\n\n\n");;
-            return "error";
+            if (patients.isEmpty()) {
+                model.addAttribute("error", "*****No patients found with " + description + " sentiment.*****");;
+                return "welcome";
+            }
+            model.addAttribute("patients", patients);
+            return "patients"; // Ensure this view displays the list of patients.
         }
-        model.addAttribute("patients", patients);
-        return "patients"; // Ensure this view displays the list of patients.
+        model.addAttribute("error", "Please login");
+        return "loginForm";
     }
 
     @GetMapping("/lastname/{lastname}")
-    public String getPatientsByLastname(@PathVariable("lastname") String lastname, Model model) {
-        List<Patient>   patientsWithSameLastName = patientService.findPatientByLastName(lastname);
-        if (patientsWithSameLastName.isEmpty()) {
-            model.addAttribute("message", "Patients with last name '"+lastname+"' does not exist");
+    public String getPatientsByLastname(@PathVariable("lastname") String lastname, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Patient>   patientsWithSameLastName = patientService.findPatientByLastName(lastname);
+            if (patientsWithSameLastName.isEmpty()) {
+                model.addAttribute("error", "There are no any patients with lastname '"+lastname+"' ");
+                return "welcome";
+            }
+            model.addAttribute("patients", patientsWithSameLastName);
+            return "patients";
         }
-        model.addAttribute("patients", patientsWithSameLastName);
-        return "patients";
+        model.addAttribute("error", "Please login");
+        return "loginForm";
     }
 
     @GetMapping("/gender/{typeOfGender}")
-    public String getPatientsByGender(@PathVariable("typeOfGender") String typeOfGender, Model model) {
-        List<Patient> patientsByGender = patientService.findPatientsByGender(typeOfGender);
-        if (patientsByGender.isEmpty()) {
-            model.addAttribute("message", "No patients found with " + typeOfGender + " gender.");
+    public String getPatientsByGender(@PathVariable("typeOfGender") String typeOfGender, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Patient> patientsByGender = patientService.findPatientsByGender(typeOfGender);
+            if (patientsByGender.isEmpty()) {
+                model.addAttribute("error", "No patients found with " + typeOfGender + " gender.");
+                return "welcome";
+            }
+            model.addAttribute("patients", patientsByGender);
+            return "patients";
         }
-        model.addAttribute("patients", patientsByGender);
-        return "patients";
+        model.addAttribute("error", "Please login");
+        return "loginForm";
     }
 
     // *********************************************************************************************** //

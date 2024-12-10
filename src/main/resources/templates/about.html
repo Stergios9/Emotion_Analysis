@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
-    <link rel="stylesheet" type="text/css" href="css/hum.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hum.css}" />
 </head>
 <body>
 
@@ -12,8 +12,8 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="contact.html">Contact</a>
-            <a href="index.html">Home</a>
+            <a href="contact">CONTACT</a>
+            <a href="index">MEDICAL DIAGNOSIS</a>
         </div>
     </div>
     <h1>About Us</h1>
@@ -42,5 +42,8 @@
         menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
     }
 </script>
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
 </body>
 </html>

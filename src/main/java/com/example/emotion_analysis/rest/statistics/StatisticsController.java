@@ -18,6 +18,11 @@ public class StatisticsController {
     @Autowired
     private PatientService patientService;
 
+    @GetMapping("/")
+    public String loginForm(Model model) {
+        return "statistics";
+    }
+
     // ************************** Finds the most frequent sentiments *****************************  //
     // ************************************** Histogram ******************************************  //
 
