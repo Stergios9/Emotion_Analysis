@@ -46,18 +46,35 @@ public class LocationController {
 
         User user = (User) session.getAttribute("user");
         if(user != null) {
+            String role = user.getRole();
+            model.addAttribute("role", role);
             List<Location> locationsBySpecialization = locationService.findLocationsBySpecialization(specialization);
+
             // Check if the list of locations is empty
             if (locationsBySpecialization.isEmpty()) {
-                model.addAttribute("error", "There are no Locations");
-                return "welcome"; // Return error view if no locations found
+                model.addAttribute("error", "There are no psychologists with this specialization");
+                return "error";
             }
             // Add the list of locations to the model
             model.addAttribute("locations", locationsBySpecialization);
             return "locations"; // Return the view to display the locations
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
-
 }
+//    @GetMapping("/psychologists/{specialization}")
+//    public String getLocationsBySpecialization(@PathVariable("specialization") String specialization,Model model) {
+//
+//        List<Location> locationsBySpecialization = locationService.findLocationsBySpecialization(specialization);
+//        // Check if the list of locations is empty
+//        if (locationsBySpecialization.isEmpty()) {
+//            model.addAttribute("error", "There are no Locations");
+//            return "welcome"; // Return error view if no locations found
+//        }
+//        // Add the list of locations to the model
+//        model.addAttribute("locations", locationsBySpecialization);
+//        return "locations"; // Return the view to display the locations
+//    }
+
+

@@ -69,4 +69,8 @@ public class PsychologistServiceImpl implements PsychologistService {
         }
     }
 
+    @Override
+    public List<Psychologist> findPsychologistsByLocation(String city) {
+        return psychologistRepository.findPsychologistsByCity(city);
+    }
 }

@@ -1,22 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Welcome Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistics</title>
-    <link rel="stylesheet" type="text/css" href="css/hum.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
     <style>
-
-        .background-container {
-            position: relative;
-            width: 100%;  /* Adjust for full width */
-            height: 500px;  /* Increase height */
-            background-image: url("/images/pic3.jpg");  /* Correct relative path */
-            background-size: cover;  /* Cover entire container */
-            background-position: center;  /* Center the image */
-            background-repeat: no-repeat;  /* Prevent tiling */
+        /* Reset body margins and paddings */
+        body {
+            margin: 0;
+            padding: 0;
         }
 
+        /* Style for the image container */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 120px); /* Adjust height to fill remaining space below the header */
+            overflow: hidden; /* Ensures the image doesn't overflow the container */
+        }
+
+        /* Style for the image itself */
+        .image-container img {
+            width: 100%; /* Ensures the image covers the container width */
+            height: 100%; /* Ensures the image covers the container height */
+            object-fit: cover; /* Ensures the image maintains aspect ratio while covering the area */
+        }
+
+        /* Optional footer style */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -25,11 +43,30 @@
 <div class="header-container">
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="/welcome">HOME</a>
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/patients">PATIENTS</a>
+                <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
+                <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+            <a href="/logout">LOGOUT</a>
 
+        </div>
     </div>
+    <h1>Psychological Insights Platform</h1>
 </div>
 
-<div class="background-container"></div>
+<!-- Display error message if login fails -->
+<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+<!-- Image Container -->
+<div class="image-container">
+    <img src="images/statistics.jpg" alt="Psychological Insights" />
+</div>
 
 <!-- JavaScript for Menu Toggle -->
 <script>
@@ -38,6 +75,7 @@
         menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
     }
 </script>
+
 <footer>
     &copy; 2024 Emotion Analysis System. All rights reserved.
 </footer>

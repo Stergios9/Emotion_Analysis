@@ -22,5 +22,6 @@ public interface PsychologistService {
 
     void updatePsychologistEmail(int id, String email);
 
+    List<Psychologist> findPsychologistsByLocation(String city);
 
 }

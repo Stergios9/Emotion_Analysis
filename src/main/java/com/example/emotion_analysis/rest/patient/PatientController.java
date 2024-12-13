@@ -27,11 +27,13 @@ public class PatientController {
     public String getAllPatients(HttpSession session,Model model) {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
         if (user != null) {
+            String role = user.getRole();
+            model.addAttribute("role", role);
             List<Patient> allPatients = patientService.findAllPatients();
             model.addAttribute("patients", allPatients); // Προσθήκη της λίστας στο μοντέλο
             return "patients"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 
@@ -48,53 +50,39 @@ public class PatientController {
                 model.addAttribute("error", "The patient does not exist");
                 return "welcome";
             }
+            String role = user.getRole();
+            model.addAttribute("role", role);
             model.addAttribute("patient", tempPatient);
             return "patient";
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 
-//    @GetMapping("/city/{city}")
-//    public String getPatientByCity(@PathVariable("city") String city, HttpSession session, Model model) {
-//        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
-//        if (user != null) {
-//            List<Patient> patientsByCity = new ArrayList<>();
-//            List<Patient> allPatients = patientService.findAllPatients();
-//
-//            for (Patient patient : allPatients) {
-//                if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
-//                    patientsByCity.add(patient);
-//                }
-//            }
-//            if (patientsByCity.isEmpty()) {
-//                model.addAttribute("error", "No patients found in this city.");
-//                return "welcome";
-//            }
-//            model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
-//            return "patients";  // The name of the page that displays the list of patients by city
-//        }
-//        model.addAttribute("error", "Please login");
-//        return "loginForm";
-//    }
+    @GetMapping("/city/{city}")
+    public String getPatientByCity(@PathVariable("city") String city, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Patient> patientsByCity = new ArrayList<>();
+            List<Patient> allPatients = patientService.findAllPatients();
 
-@GetMapping("/city/{city}")
-public String getPatientByCity(@PathVariable("city") String city, Model model) {
-    List<Patient> patientsByCity = new ArrayList<>();
-    List<Patient> allPatients = patientService.findAllPatients();
-
-    for (Patient patient : allPatients) {
-        if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
-            patientsByCity.add(patient);
+            for (Patient patient : allPatients) {
+                if (patient.getLocation().getCity().equalsIgnoreCase(city)) {
+                    patientsByCity.add(patient);
+                }
+            }
+            if (patientsByCity.isEmpty()) {
+                model.addAttribute("error", "No patients found in this city.");
+                return "welcome";
+            }
+            String role = user.getRole();
+            model.addAttribute("role", role);
+            model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
+            return "patients";  // The name of the page that displays the list of patients by city
         }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
-    if (patientsByCity.isEmpty()) {
-        model.addAttribute("error", "No patients found in the specified city.");
-        return "error";
-    }
-    model.addAttribute("patients", patientsByCity);  // Use "patients" to handle a list
-    return "patients";  // The name of the page that displays the list of patients by city
-}
 
     @GetMapping("/sentiment/{description}")
     public String getPatientsBySentiment(@PathVariable("description") String description, HttpSession session, Model model) {
@@ -109,7 +97,7 @@ public String getPatientByCity(@PathVariable("city") String city, Model model) {
             model.addAttribute("patients", patients);
             return "patients"; // Ensure this view displays the list of patients.
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 
@@ -122,10 +110,12 @@ public String getPatientByCity(@PathVariable("city") String city, Model model) {
                 model.addAttribute("error", "There are no any patients with lastname '"+lastname+"' ");
                 return "welcome";
             }
+            String role = user.getRole();
+            model.addAttribute("role", role);
             model.addAttribute("patients", patientsWithSameLastName);
             return "patients";
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 
@@ -138,10 +128,12 @@ public String getPatientByCity(@PathVariable("city") String city, Model model) {
                 model.addAttribute("error", "No patients found with " + typeOfGender + " gender.");
                 return "welcome";
             }
+            String role = user.getRole();
+            model.addAttribute("role", role);
             model.addAttribute("patients", patientsByGender);
             return "patients";
         }
-        model.addAttribute("error", "Please login");
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 

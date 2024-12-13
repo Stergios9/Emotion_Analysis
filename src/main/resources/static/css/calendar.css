@@ -42,13 +42,7 @@ body {
     margin: 0 auto;
 }
 
-.calendar-table th,
-.calendar-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    width: 14.2%; /* Ensure 7 columns */
-}
+
 
 .has-data {
     background-color: #f0f8ff;

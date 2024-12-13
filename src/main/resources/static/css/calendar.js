@@ -27,7 +27,6 @@ function clearAllNotes() {
     generateCalendar(currentYear, currentMonth);
 }
 
-
 // Generate calendar for the current month
 function generateCalendar(year, month) {
     const calendarDays = document.getElementById('calendar-days');
@@ -84,6 +83,9 @@ function setupModal() {
     const modal = document.getElementById("note-modal");
     const closeModal = document.getElementById("close-modal");
 
+    // const saveNoteButton = document.getElementById("save-note");
+    // saveNoteButton.enabled = true;
+
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
     });
@@ -99,56 +101,49 @@ function openNoteModal(year, month, day) {
     const modal = document.getElementById("note-modal");
     const noteDate = document.getElementById("note-date");
     const noteInput = document.getElementById("note-input");
+    const patientName = document.getElementById("name");
+    const patientEmail = document.getElementById("email");
 
     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     noteDate.textContent = formattedDate;
+
+
     noteInput.value = notes[formattedDate] || ""; // Pre-fill with existing note if available
+    patientName.value = ""; // Clear the name field
+    patientEmail.value = ""; // Clear the email field
+
 
     modal.style.display = "block";
 }
 
-// function saveNote() {
-//     const noteDate = document.getElementById("note-date").textContent;
-//     const noteInput = document.getElementById("note-input").value;
-//
-//     notes[noteDate] = noteInput; // Save the note for the specific date
-//
-//     // Save the updated notes to localStorage
-//     localStorage.setItem("notes", JSON.stringify(notes));
-//
-//     alert(`Note saved for ${noteDate}`);
-//
-//     document.getElementById("note-modal").style.display = "none"; // Close the modal
-// }
-//
-// function saveNote() {
-//     const noteDate = document.getElementById("note-date").textContent;
-//     const noteInput = document.getElementById("note-input").value;
-//
-//     // Send a POST request to save the note
-//     fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//     }).then(response => {
-//         alert(`Note saved for ${noteDate}`);
-//         document.getElementById("note-modal").style.display = "none"; // Close the modal
-//     }).catch(error => console.error('Error:', error));
-// }
 
 function saveNote() {
     const noteDate = document.getElementById("note-date").textContent;
     const noteInput = document.getElementById("note-input").value;
+    const patientName = document.getElementById("name").value
+    const patientEmail = document.getElementById("email").value
 
-    // Send a POST request to save or update the note
-    fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }).then(response => {
-        alert(`Note saved for ${noteDate}`);
-        document.getElementById("note-modal").style.display = "none"; // Close the modal
-    }).catch(error => console.error('Error:', error));
+    // Ensure all fields are filled out
+    if (!noteInput || !patientName || !patientEmail) {
+        alert("All fields are mandatory. Please fill out the note, name, and email.");
+        return;
+    }
+
+    if(noteDate){
+        // Send a POST request to save or update the note
+        fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}&name=${patientName}&email=${patientEmail}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(response => {
+            alert(`Note saved for ${noteDate}`);
+            document.getElementById("note-modal").style.display = "none"; // Close the modal
+        }).catch(error => console.error('Error:', error));
+    }else{
+        alert("Please select a date before submitting!");
+        return;
+    }
+
+
 }

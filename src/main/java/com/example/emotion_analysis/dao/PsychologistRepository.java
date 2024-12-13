@@ -34,4 +34,8 @@ public interface PsychologistRepository extends JpaRepository<Psychologist, Inte
     @Query("UPDATE Psychologist p SET p.email = :email WHERE p.id = :id")
     int updateEmailById(@Param("id") int id, @Param("email") String email);
 
+
+    @Query("SELECT p FROM Psychologist p WHERE p.location.city = :city")
+    List<Psychologist> findPsychologistsByCity(@Param("city") String city);
+
 }

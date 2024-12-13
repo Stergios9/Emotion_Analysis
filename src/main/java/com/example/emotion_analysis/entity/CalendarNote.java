@@ -11,11 +11,26 @@ public class CalendarNote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "note_Date")
+    @Column(name = "note_date")
     private LocalDate noteDate;
-
-    @Column(name = "note_Content")
+    
+    @Column(name = "note_content")
     private String noteContent;
+    
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "name")
+    private String name;
+
+    public CalendarNote(LocalDate noteDate, String noteContent, String email, String name) {
+        this.noteDate = noteDate;
+        this.noteContent = noteContent;
+        this.email = email;
+        this.name = name;
+    }
+
+    public CalendarNote() {}
 
     // Getters and setters
     public int getId() {
@@ -40,5 +55,21 @@ public class CalendarNote {
 
     public void setNoteContent(String noteContent) {
         this.noteContent = noteContent;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

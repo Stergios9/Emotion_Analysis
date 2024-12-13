@@ -2,10 +2,12 @@ package com.example.emotion_analysis.rest.psychologist;
 
 import com.example.emotion_analysis.entity.Location;
 import com.example.emotion_analysis.entity.Psychologist;
+import com.example.emotion_analysis.entity.User;
 import com.example.emotion_analysis.service.location.LocationServiceImpl;
 import com.example.emotion_analysis.service.psychologists.PsychologistServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,24 +61,50 @@ public class PsychologistController {
     // *************************************** GET METHODS ******************************************* //
 
     @GetMapping
-    public String getAllPsychologists(Model model) {
-        List<Psychologist> allPsychologists = psychologistService.findAllPsychologists();
-        model.addAttribute("psychologists", allPsychologists);
-        return "psychologists";
+    public String getAllPsychologists(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+
+        if (user != null) {
+            String role = user.getRole();
+            model.addAttribute("role", role);
+            List<Psychologist> allPsychologists = psychologistService.findAllPsychologists();
+            model.addAttribute("psychologists", allPsychologists);
+            return "psychologists";
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
+    @GetMapping("/city/{city}")
+    public String getPsychologistsByCity(HttpSession session,Model model, @PathVariable String city) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            String role = user.getRole();
+            model.addAttribute("role", role);
+            List<Psychologist> psychologistsByCity = psychologistService.findPsychologistsByLocation(city);
+            model.addAttribute("psychologists", psychologistsByCity);
+            return "psychologists";
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
 
     @GetMapping("/speciality/{specialization}")
-    public String psychologistsSpeciality(@PathVariable("specialization") String specialization, Model model) {
-
-        List<Psychologist> psychologists = psychologistService.findPsychologistBySpeciality(specialization);
-
-        if (psychologists == null) {
-            model.addAttribute("message", "Psychologist with specialization " + specialization + " not found");
-            return "error";
+    public String psychologistsSpeciality(@PathVariable("specialization") String specialization,HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            List<Psychologist> psychologists = psychologistService.findPsychologistBySpeciality(specialization);
+            if (psychologists == null) {
+                model.addAttribute("message", "Psychologist with specialization " + specialization + " not found");
+                return "error";
+            }
+            String role = user.getRole();
+            model.addAttribute("role", role);
+            model.addAttribute("psychologists", psychologists);
+            return "psychologists";
         }
-
-        model.addAttribute("psychologists", psychologists);
-        return "psychologists";
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
 
     // ******************************************************************************************** //

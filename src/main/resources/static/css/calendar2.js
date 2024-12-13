@@ -1,6 +1,3 @@
-// Retrieve saved notes from localStorage (if any)
-let notes = JSON.parse(localStorage.getItem("notes")) || {};
-
 // Month names for display
 const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -15,13 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setupModal();
 });
 
-// Generate calendar for the current month
+// Generate the calendar
 function generateCalendar(year, month) {
     const calendarDays = document.getElementById('calendar-days');
     calendarDays.innerHTML = ''; // Clear previous calendar content
 
     const monthYear = document.getElementById('month-year');
-    monthYear.textContent = `${monthNames[month]} ${year}`; // Display month and year
+    monthYear.textContent = `${monthNames[month]} ${year}`;
 
     const firstDay = new Date(year, month, 1).getDay(); // Day of the week the month starts on
     const daysInMonth = new Date(year, month + 1, 0).getDate(); // Total days in the month
@@ -39,11 +36,12 @@ function generateCalendar(year, month) {
         cell.textContent = day;
         cell.classList.add('calendar-day');
 
-        // Add click event to open modal for notes
+        // Add click event to open modal and fetch data for that date
         cell.addEventListener('click', () => openNoteModal(year, month, day));
 
         row.appendChild(cell);
 
+        // Start a new row after every Saturday or on the last day
         if ((firstDay + day) % 7 === 0 || day === daysInMonth) {
             calendarDays.appendChild(row);
             row = document.createElement('tr');
@@ -82,57 +80,36 @@ function setupModal() {
     });
 }
 
-// function openNoteModal(year, month, day) {
-//     const modal = document.getElementById("note-modal");
-//     const noteDate = document.getElementById("note-date");
-//     const noteContent = document.getElementById("note-content");
-//
-//     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-//     noteDate.textContent = formattedDate;
-//
-//     // Check if a note exists for this day
-//     if (notes[formattedDate]) {
-//         noteContent.innerHTML = `<p>${notes[formattedDate]}</p>`; // Display the saved note
-//     } else {
-//         noteContent.innerHTML = "<p>No notes for this day.</p>"; // Show message if no note exists
-//     }
-//
-//     modal.style.display = "block";
-// }
-
-// function openNoteModal(year, month, day) {
-//     const modal = document.getElementById("note-modal");
-//     const noteDate = document.getElementById("note-date");
-//     const noteContent = document.getElementById("note-content");
-//
-//     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-//     noteDate.textContent = formattedDate;
-//
-//     // Fetch the note from the server
-//     fetch(`/calendar/get-note?date=${formattedDate}`)
-//         .then(response => response.text())
-//         .then(data => {
-//             noteContent.innerHTML = `<p>${data}</p>`; // Display the note or a message
-//             modal.style.display = "block";
-//         })
-//         .catch(error => console.error('Error:', error));
-// }
-
+// Open the modal and fetch notes for a specific date
 function openNoteModal(year, month, day) {
     const modal = document.getElementById("note-modal");
     const noteDate = document.getElementById("note-date");
     const noteContent = document.getElementById("note-content");
 
+    // Format the date as YYYY-MM-DD
     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     noteDate.textContent = formattedDate;
 
-    // Fetch the note from the server
-    fetch(`/calendar/get-note?date=${formattedDate}`)
-        .then(response => response.text())
+    // Fetch records from the database for the selected date
+    fetch(`/calendar/get-records?date=${formattedDate}`)
+        .then(response => response.json())  // Expect a JSON response
         .then(data => {
-            noteContent.innerHTML = `<p>${data}</p>`; // Display the note or a message
-            modal.style.display = "block";
+            if (data.length > 0) {
+                let recordsHtml = '';
+                data.forEach(record => {
+                    // Assuming your record has properties: name, noteContent, etc.
+                    recordsHtml += `<p><strong>${record.name}:</strong> ${record.noteContent}</p>`;
+                });
+                noteContent.innerHTML = recordsHtml;  // Display the records in the modal
+            } else {
+                noteContent.innerHTML = "<p>No records found for this day.</p>";  // If no records found
+            }
+            modal.style.display = "block"; // Show the modal
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error fetching records:', error);
+            noteContent.innerHTML = "<p>Error loading records.</p>";  // Display error message
+            modal.style.display = "block"; // Show the modal even if error occurs
+        });
 }
 

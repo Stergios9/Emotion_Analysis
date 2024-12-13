@@ -16,15 +16,17 @@
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
-            <a href="index">MEDICAL DIAGNOSIS</a>
-            <a href="/calendar2">SEE NOTES</a>
-            <a href="/calendar">CALENDAR</a>
-            <a href="/calendar2">APPOITMENTS</a>
+            <th:block th:if="${role == 'USER'}">
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="index">MEDICAL DIAGNOSIS</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/stats">STATS</a>
+                <a href="/calendar2">APPOITMENTS</a>
+            </th:block>
             <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
             <a href="/logout">LOGOUT</a>
-
-
-
             <!-- Example existing link -->
         </div>
     </div>
@@ -40,15 +42,15 @@
 </script>
 <br>
 <div class="calendar-header">
-    <button id="prev-month" onclick="changeMonth(-1)">&#8592; Previous</button>
+    <button id="prev-month" onclick="changeMonth(-1)"> &#8592;</button>
     <h2 id="month-year"></h2>
-    <button id="next-month" onclick="changeMonth(1)">Next &#8594;</button>
+    <button id="next-month" onclick="changeMonth(1)"> &#8594;</button>
     <!--    <button onclick="clearAllNotes()">Clear All Notes</button>-->
 
 </div>
 <br>
 
-<table class="calendar-table">
+<table class="table">
     <thead>
     <tr>
         <th>Sun</th>
@@ -65,14 +67,17 @@
     </tbody>
 </table>
 </div>
-<div id="note-modal" class="modal">
-    <div class="modal-content">
-        <span id="close-modal" class="close">&times;</span>
-        <h3>Add Note for:  <span id="note-date"></span></h3>
-        <textarea id="note-input" rows="5" placeholder="Write your note here..."></textarea>
-        <button id="save-note" onclick="saveNote()">Add Note</button>
-    </div>
+
+<div class="modal-content" style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
+    <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;">&times;</span>
+    <h3 style="text-align: left; margin-left: 0; padding-left: 10px; width: 60%; max-width: 400px; font-size: 20px; box-sizing: border-box;">
+        Preferred date: <span id="note-date"></span>
+    </h3>    <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Preferred time:"></textarea>
+    <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your name:"></textarea>
+    <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your email:"></textarea>
+    <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;" >Add Note</button>
 </div>
+
 
 <!-- Link to your script -->
 <script src="/css/calendar.js"></script>

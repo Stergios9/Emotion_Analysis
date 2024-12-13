@@ -30,6 +30,8 @@ public class LoginController {
             model.addAttribute("error", "User not logged in. Please login to access this resource.");
             return "loginForm"; // Redirect to login page if not logged in
         }
+        String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+        model.addAttribute("role", role); // Pass the role to the template
         return "about"; // Show the about page if logged in
     }
 
@@ -37,6 +39,8 @@ public class LoginController {
     public String contactForm(HttpSession session,Model model) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
             return "contact";
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
@@ -48,19 +52,36 @@ public class LoginController {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
 
         if (user != null) {
-            model.addAttribute("username", user.getUsername()); // Add the username to the model
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
             return "welcome"; // Return the welcome page
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm"; // If no user is logged in, redirect to login
     }
 
+
+    @GetMapping("/stats")
+    public String statistics(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+
+        if (user != null) {
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
+            return "statistics"; // Return the welcome page
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm"; // If no user is logged in, redirect to login
+    }
+
+
     @GetMapping("/index")
     public String MedicalDiagnosis(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
 
         if (user != null) {
-            model.addAttribute("username", user.getUsername()); // Add the username to the model
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
             return "index"; // Return the welcome page
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
@@ -76,6 +97,8 @@ public class LoginController {
 
         if (user != null) {
             session.setAttribute("user", user); // Store the user in the session
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
             return "welcome"; // Redirect to welcome.html
         }
         model.addAttribute("error", "Invalid username or password.");

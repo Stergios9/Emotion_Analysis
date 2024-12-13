@@ -15,26 +15,14 @@ public class CalendarNoteServiceImp implements CalendarNoteService {
     private CalendarNoteRepository calendarNoteRepository;
 
     @Override
-    public CalendarNote saveOrUpdateNote(LocalDate date, String content) {
-        CalendarNote existingNote = calendarNoteRepository.findByNoteDate(date);
-
-        if (existingNote != null) {
-            // Update the existing note
-            existingNote.setNoteContent(content);
-            return calendarNoteRepository.save(existingNote);  // Save the updated note
-        } else {
-            // No existing note for the date, create a new one
-            CalendarNote newNote = new CalendarNote();
-            newNote.setNoteDate(date);
-            newNote.setNoteContent(content);
-            return calendarNoteRepository.save(newNote);  // Save the new note
-
-        }
+    public CalendarNote saveNote(LocalDate date, String content, String name, String email) {
+        // Create a new note each time regardless of whether a note for that date already exists.
+        CalendarNote newNote = new CalendarNote();
+        newNote.setNoteDate(date);
+        newNote.setNoteContent(content);  // Set note content
+        newNote.setName(name);            // Set name
+        newNote.setEmail(email);          // Set email
+        return calendarNoteRepository.save(newNote);  // Save the new note
     }
-
-        @Override
-        public CalendarNote getNoteByDate (LocalDate date){
-            return calendarNoteRepository.findByNoteDate(date);
-        }
 
 }

@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Top 5 Most Frequent Sentiments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -21,6 +23,29 @@
     </style>
 </head>
 <body>
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+            <a href="/welcome">HOME</a>
+            <a href="/stats">STATS</a>  <!-- Example existing link -->
+            <a href="/logout">LOGOUT</a>
+            <!-- Example existing link -->
+        </div>
+    </div>
+    <h1 style="text-align: center;">Psychological Insights Platform</h1>
+</div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+<br>
 <h1>Top 5 Most Frequent Sentiments</h1>
 <div id="chart-container">
     <canvas id="sentimentChart"></canvas>

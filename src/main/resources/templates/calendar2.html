@@ -16,12 +16,14 @@
     <button onclick="toggleMenu()">☰</button>
     <div class="menu" id="menu-content">
       <a href="/welcome">HOME</a>
-      <a href="/employees">ROSTER</a>
-      <a href="/calendar">CALENDAR</a>
+      <!-- Visible only for admins -->
+      <th:block th:if="${role == 'ADMIN'}">
+        <a href="/calendar2">SEE APPOITMENTS</a>
+        <a href="/calendar2">CONFIRM APPOITMENTS</a>
+        <a href="/stats">STATS</a>
+      </th:block>
+
       <a href="/logout">LOGOUT</a>
-
-
-      <!-- Example existing link -->
     </div>
   </div>
   <h1 style="text-align: center;">CALENDAR</h1>
@@ -65,6 +67,7 @@
     <span id="close-modal" class="close">&times;</span>
     <h3>Notes for <span id="note-date"></span></h3>
     <div id="note-content"></div>
+    <!--    <textarea id="note-content" placeholder="Write your notes here..."></textarea>-->
   </div>
 </div><!-- Link to your script -->
 <script src="/css/calendar2.js"></script>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Patients List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
 </head>
 <body>
@@ -12,12 +13,19 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="index">MEDICAL DIAGNOSIS</a>
-            <a href="/calendar">CALENDAR</a>
-            <a href="/calendar2">APPOITMENTS</a>
-            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-            <a href="/patients">PATIENTS</a> <!-- Link to call the controller method -->
-            <a href="/statistics">STATS</a>  <!-- Example existing link -->
+            <a href="/welcome">HOME</a>
+
+            <th:block th:if="${role == 'USER'}">
+                <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOITMENT</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/calendar2">APPOINTMENTS</a>
+                <a href="/calendar">CONFIRM APPOITMENT</a>
+                <a href="/stats">STATS</a>
+            </th:block>
             <a href="/logout">LOGOUT</a>
             <!-- Example existing link -->
         </div>
