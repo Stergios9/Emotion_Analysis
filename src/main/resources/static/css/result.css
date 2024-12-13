@@ -106,16 +106,13 @@ tr:hover {
 }
 
 
-/* Optional: Footer styling */
 footer {
     margin-top: 20px;
     text-align: center;
     font-size: 20px;
+    padding: 50px;
     color: #777;
 }
-
-/*CALLENDAR*/
-
 
 .calendar-header {
     display: flex;               /* Use Flexbox layout */
@@ -144,4 +141,25 @@ footer {
     box-sizing: border-box;       /* Include padding and border in dimensions */
 }
 
+.record-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.record-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.record-item {
+    flex: 1;
+    text-align: left;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

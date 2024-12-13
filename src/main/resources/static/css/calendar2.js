@@ -79,37 +79,124 @@ function setupModal() {
         }
     });
 }
-
-// Open the modal and fetch notes for a specific date
 function openNoteModal(year, month, day) {
     const modal = document.getElementById("note-modal");
     const noteDate = document.getElementById("note-date");
+    const preferredDate = document.getElementById("preferred-date");
     const noteContent = document.getElementById("note-content");
 
     // Format the date as YYYY-MM-DD
     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    noteDate.textContent = formattedDate;
 
-    // Fetch records from the database for the selected date
+    // Update both the modal header and the "Create Appointment for" section with the selected date
+    noteDate.textContent = formattedDate;
+    preferredDate.textContent = formattedDate;
+
+    // Fetch records from the backend for the selected date
     fetch(`/calendar/get-records?date=${formattedDate}`)
-        .then(response => response.json())  // Expect a JSON response
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json(); // Expect JSON response
+        })
         .then(data => {
-            if (data.length > 0) {
-                let recordsHtml = '';
+            if (data && data.length > 0) {
+                let recordsHtml = '<div class="record-container">';
                 data.forEach(record => {
-                    // Assuming your record has properties: name, noteContent, etc.
-                    recordsHtml += `<p><strong>${record.name}:</strong> ${record.noteContent}</p>`;
+                    const regex = /Name:\s*(.*?)\s*-\s*Time:\s*(.*?)\s*-\s*Email:\s*(.*)/;
+                    const match = record.match(regex);
+                    if (match) {
+                        const name = match[1];
+                        const time = match[2];
+                        const email = match[3];
+
+                        // Create the HTML with a delete button
+                        recordsHtml += `
+                            <div class="record-row">
+                                <div class="record-item"><strong>Name:</strong> ${name}</div>
+                                <div class="record-item"><strong>Time:</strong> ${time}</div>
+                                <div class="record-item"><strong>Email:</strong> ${email}</div>
+                                <div class="record-item">
+                                    <button onclick="deleteRecord('${name}', '${time}', '${email}')">Delete</button>
+                                </div>
+                            </div>
+                        `;
+                    }
                 });
-                noteContent.innerHTML = recordsHtml;  // Display the records in the modal
+                recordsHtml += '</div>';
+                noteContent.innerHTML = recordsHtml; // Display the notes
             } else {
-                noteContent.innerHTML = "<p>No records found for this day.</p>";  // If no records found
+                noteContent.innerHTML = "<p>No records found for this day.</p>"; // If no records found
             }
             modal.style.display = "block"; // Show the modal
         })
         .catch(error => {
             console.error('Error fetching records:', error);
-            noteContent.innerHTML = "<p>Error loading records.</p>";  // Display error message
+            noteContent.innerHTML = "<p>Error loading records.</p>"; // Display error
             modal.style.display = "block"; // Show the modal even if error occurs
         });
 }
+
+// Function to delete a record
+function deleteRecord(name, time, email) {
+    const confirmation = confirm(`Are you sure you want to delete the record:\nName: ${name}, Time: ${time}, Email: ${email}?`);
+    if (!confirmation) return;
+
+    fetch(`/calendar/delete-record?name=${encodeURIComponent(name)}`, {
+        method: 'DELETE',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to delete record! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(message => {
+            alert(message); // Show success or failure message
+            openNoteModal(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()); // Refresh the modal
+        })
+        .catch(error => {
+            console.error('Error deleting record:', error);
+            alert('Failed to delete the record. Please try again.');
+        });
+}
+
+function saveNote() {
+    const noteDate = document.getElementById("note-date").textContent;
+    const noteInput = document.getElementById("note-input").value;
+    const patientName = document.getElementById("name").value
+    const patientEmail = document.getElementById("email").value
+
+    // Ensure all fields are filled out
+    if (!noteInput || !patientName || !patientEmail) {
+        alert("All fields are mandatory. Please fill out the note, name, and email.");
+        return;
+    }
+
+    if(noteDate){
+        // Send a POST request to save or update the note
+        fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}&name=${patientName}&email=${patientEmail}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(response => {
+            alert(`Note saved for ${noteDate}`);
+            document.getElementById("note-modal").style.display = "none"; // Close the modal
+        }).catch(error => console.error('Error:', error));
+    }else{
+        alert("Please select a date before submitting!");
+        return;
+    }
+
+
+}
+
+
+function closeNoteModal() {
+    const modal = document.getElementById("note-modal");
+    modal.style.display = "none"; // Hide the modal
+}
+
 

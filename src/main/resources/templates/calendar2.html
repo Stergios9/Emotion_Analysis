@@ -4,6 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar</title>
+  <style>
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 60%;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover, .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
   <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/calendar.css}" />-->
   <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
 </head>
@@ -18,8 +53,7 @@
       <a href="/welcome">HOME</a>
       <!-- Visible only for admins -->
       <th:block th:if="${role == 'ADMIN'}">
-        <a href="/calendar2">SEE APPOITMENTS</a>
-        <a href="/calendar2">CONFIRM APPOITMENTS</a>
+        <a href="/appoitmentsAdmin">CONFIRM APPOITMENTS</a>
         <a href="/stats">STATS</a>
       </th:block>
 
@@ -62,18 +96,44 @@
 </div>
 
 <!-- Modal for displaying notes -->
-<div id="note-modal" class="modal">
-  <div class="modal-content">
-    <span id="close-modal" class="close">&times;</span>
-    <h3>Notes for <span id="note-date"></span></h3>
-    <div id="note-content"></div>
-    <!--    <textarea id="note-content" placeholder="Write your notes here..."></textarea>-->
-  </div>
-</div><!-- Link to your script -->
-<script src="/css/calendar2.js"></script>
+<div id="note-modal" style="display: none;">
+  <!-- Display the selected date -->
+  <h2 id="note-date">Selected Date</h2>
 
+  <!-- Content area for displaying notes -->
+  <div id="note-content">
+    <!-- Dynamically inserted notes will appear here -->
+  </div>
+
+  <div id="note-email">
+    <!-- Dynamically inserted email will appear here -->
+  </div>
+
+  <!-- Button to close the modal -->
+  <button onclick="closeNoteModal()">Close</button>
+</div>
+
+
+
+<!-- New content for adding a note (form for input) -->
+<div style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
+  <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;"></span>
+  <h3 style="text-align: left; margin-left: 0; padding-left: 10px; width: 60%; max-width: 400px; font-size: 20px; box-sizing: border-box;">
+    Create Appointment for: <span id="preferred-date"></span>
+  </h3>
+  <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="time:"></textarea>
+  <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="name:"></textarea>
+  <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="email:"></textarea>
+  <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;">Confirm</button>
+</div>
+
+
+
+
+<script src="/css/calendar2.js"></script>
 <footer>
   &copy; 2024 Emotion Analysis System. All rights reserved.
 </footer>
+
 </body>
 </html>

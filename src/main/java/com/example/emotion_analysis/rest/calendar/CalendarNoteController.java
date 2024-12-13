@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
 @Controller
 @RequestMapping()
 public class CalendarNoteController {
@@ -46,5 +44,23 @@ public class CalendarNoteController {
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
+    @GetMapping("/appoitmentsAdmin")
+    public String appoitmentsAdmin(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            String role = user.getRole();
+            // Use .equalsIgnoreCase() for a case-insensitive comparison
+            if ("ADMIN".equalsIgnoreCase(role)) {
+                model.addAttribute("role", role);
+                return "appoitmentsAdmin";
+            } else {
+                model.addAttribute("error", "User must have role ADMIN");
+                return "loginForm";
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
 
 }

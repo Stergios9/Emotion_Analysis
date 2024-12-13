@@ -72,4 +72,13 @@ public class CalendarNote {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "CalendarNote{" +
+                "name='" + name + '\'' +
+                ", time='" + noteContent + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

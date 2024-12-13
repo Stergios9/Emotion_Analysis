@@ -9,4 +9,8 @@ public interface CalendarNoteService {
 
     CalendarNote saveNote(LocalDate date, String content, String name, String email);
 
+    List<CalendarNote> getNotesByDate(LocalDate date);
+
+    boolean deleteNoteByName(String name);
+
 }

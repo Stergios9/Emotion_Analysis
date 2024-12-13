@@ -16,20 +16,12 @@
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
-            <th:block th:if="${role == 'USER'}">
-                <a href="index">MEDICAL DIAGNOSIS</a>
-            </th:block>
-
-            <th:block th:if="${role == 'ADMIN'}">
-                <a href="/stats">STATS</a>
-                <a href="/calendar2">APPOITMENTS</a>
-            </th:block>
-            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/calendar2">SEE APPOITMENTS</a>
             <a href="/logout">LOGOUT</a>
             <!-- Example existing link -->
         </div>
     </div>
-    <h1 style="text-align: center;">CALENDAR</h1>
+    <h1 style="text-align: center;">APPOITMENTS</h1>
 </div>
 
 <!-- JavaScript for Menu Toggle -->
@@ -68,12 +60,12 @@
 </div>
 
 <div class="modal-content" style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
-    <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;"></span>
+    <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;">&times;</span>
     <h3 style="text-align: left; margin-left: 0; padding-left: 10px; width: 60%; max-width: 400px; font-size: 20px; box-sizing: border-box;">
-        Preferred date: <span id="note-date"></span>
-    </h3>    <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Preferred time:"></textarea>
-    <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your name:"></textarea>
-    <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your email:"></textarea>
+        Date: <span id="note-date"></span>
+    </h3>    <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="time:"></textarea>
+    <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="name:"></textarea>
+    <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="email:"></textarea>
     <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;" >Add Note</button>
 </div>
 
