@@ -137,7 +137,7 @@ function saveNote() {
                 'Content-Type': 'application/json'
             },
         }).then(response => {
-            alert(`Note saved for ${noteDate}`);
+            alert(`Your request has been saved for ${noteDate}`);
             document.getElementById("note-modal").style.display = "none"; // Close the modal
         }).catch(error => console.error('Error:', error));
     }else{

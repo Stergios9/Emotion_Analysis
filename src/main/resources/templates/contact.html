@@ -14,6 +14,7 @@
             color: #333;
         }
 
+
         /* Header Container */
         .header-container {
             display: flex;
@@ -21,6 +22,7 @@
             justify-content: space-between;
             background-color: #5f9ea0;
             color: white;
+            text-align: left;
             padding: 10px 20px;
         }
 
@@ -42,36 +44,30 @@
             padding: 10px;
             border-radius: 5px;
         }
-
         .menu {
             display: none;
             position: absolute;
             top: 60px;
             left: 20px;
-            background-color: #5f9ea0;
+            background-color: rgba(95, 158, 160, 0.95);  /* Transparent teal */
             border-radius: 5px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             padding: 10px;
+            z-index: 10;
+            border: 2px solid #4a8b8d;  /* Optional border */
         }
 
         .menu a {
             display: block;
             color: white;
             text-decoration: none;
-            padding: 10px 0;
+            padding: 10px 15px;
+            font-size: 1.2em;
         }
 
         .menu a:hover {
             background-color: #4a8b8d;
-        }
-
-        .container {
-            margin: 50px auto;
-            max-width: 800px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            color: #ffebcd;
         }
 
         h2 {
@@ -171,8 +167,11 @@
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
-            <a href="about">ABOUT</a>
+            <a href="/about">ABOUT</a>
             <a href="index">MEDICAL DIAGNOSIS</a>
+            <a href="/calendar">BOOK APPOITMENT</a>
+            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/logout">LOGOUT</a>
         </div>
     </div>
     <h1>Contact Us</h1>

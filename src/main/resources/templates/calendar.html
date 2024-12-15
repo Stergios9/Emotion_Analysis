@@ -17,14 +17,16 @@
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
             <th:block th:if="${role == 'USER'}">
+                <a href="/about">ABOUT</a>
+                <a href="/contact">CONTACT</a>
                 <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
             </th:block>
 
             <th:block th:if="${role == 'ADMIN'}">
-                <a href="/stats">STATS</a>
+                <a href="/stats">STATISTICS</a>
                 <a href="/calendar2">APPOITMENTS</a>
             </th:block>
-            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
             <a href="/logout">LOGOUT</a>
             <!-- Example existing link -->
         </div>

@@ -18,12 +18,13 @@ public class CalendarNoteServiceImp implements CalendarNoteService {
     private CalendarNoteRepository calendarNoteRepository;
 
     @Override
-    public CalendarNote saveNote(LocalDate date, String content, String name, String email) {
+    public CalendarNote saveNote(LocalDate date, String content, String name,String lastName, String email) {
         // Create a new note each time regardless of whether a note for that date already exists.
         CalendarNote newNote = new CalendarNote();
         newNote.setNoteDate(date);
         newNote.setNoteContent(content);  // Set note content
         newNote.setName(name);            // Set name
+        newNote.setLastName(lastName);
         newNote.setEmail(email);          // Set email
         return calendarNoteRepository.save(newNote);  // Save the new note
     }

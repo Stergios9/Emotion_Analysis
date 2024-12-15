@@ -26,10 +26,10 @@ public class CalendarNoteRESTController {
 
     // Endpoint to add or update a note
     @PostMapping("/add-note")
-    public void addNote(@RequestParam String date, @RequestParam String content,
-                        @RequestParam String name,@RequestParam String email) {
+    public void addNote(@RequestParam String date, @RequestParam String time,
+                        @RequestParam String name, @RequestParam String lastName, @RequestParam String email) {
         LocalDate noteDate = LocalDate.parse(date);
-        calendarNoteService.saveNote(noteDate, content,name,email);
+        calendarNoteService.saveNote(noteDate,time,name,lastName,email);
     }
     @GetMapping("/get-records")
     public ResponseEntity<List<String>> getRecords(@RequestParam("date") String date) {
@@ -42,6 +42,7 @@ public class CalendarNoteRESTController {
         // Format the response
         List<String> formattedRecords = notes.stream()
                 .map(note -> "Name: " + note.getName() +
+                        " - Last Name: " + note.getLastName() +
                         " - Time: " + note.getNoteContent() +
                         " - Email: " + note.getEmail())
                 .collect(Collectors.toList());

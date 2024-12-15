@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CalendarNoteService {
 
-    CalendarNote saveNote(LocalDate date, String content, String name, String email);
+    CalendarNote saveNote(LocalDate date, String content, String name,String lastName, String email);
 
     List<CalendarNote> getNotesByDate(LocalDate date);
 

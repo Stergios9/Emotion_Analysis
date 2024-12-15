@@ -14,8 +14,8 @@ public class CalendarNote {
     @Column(name = "note_date")
     private LocalDate noteDate;
     
-    @Column(name = "note_content")
-    private String noteContent;
+    @Column(name = "time")
+    private String time;
     
     @Column(name = "email")
     private String email;
@@ -23,11 +23,15 @@ public class CalendarNote {
     @Column(name = "name")
     private String name;
 
-    public CalendarNote(LocalDate noteDate, String noteContent, String email, String name) {
+    @Column(name = "last_name")
+    private String lastName;
+
+    public CalendarNote(LocalDate noteDate, String time, String email, String name, String LastName) {
         this.noteDate = noteDate;
-        this.noteContent = noteContent;
+        this.time = time;
         this.email = email;
         this.name = name;
+        this.lastName = LastName;
     }
 
     public CalendarNote() {}
@@ -50,11 +54,11 @@ public class CalendarNote {
     }
 
     public String getNoteContent() {
-        return noteContent;
+        return time;
     }
 
-    public void setNoteContent(String noteContent) {
-        this.noteContent = noteContent;
+    public void setNoteContent(String time) {
+        this.time = time;
     }
 
     public String getEmail() {
@@ -73,12 +77,23 @@ public class CalendarNote {
         this.name = name;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public String toString() {
         return "CalendarNote{" +
-                "name='" + name + '\'' +
-                ", time='" + noteContent + '\'' +
+                "id=" + id +
+                ", noteDate=" + noteDate +
+                ", noteContent='" + time + '\'' +
                 ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 }

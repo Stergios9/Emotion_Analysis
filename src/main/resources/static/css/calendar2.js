@@ -79,11 +79,12 @@ function setupModal() {
         }
     });
 }
+
 function openNoteModal(year, month, day) {
     const modal = document.getElementById("note-modal");
     const noteDate = document.getElementById("note-date");
     const preferredDate = document.getElementById("preferred-date");
-    const noteContent = document.getElementById("note-content");
+    const timeContent = document.getElementById("time-content");
 
     // Format the date as YYYY-MM-DD
     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -104,43 +105,45 @@ function openNoteModal(year, month, day) {
             if (data && data.length > 0) {
                 let recordsHtml = '<div class="record-container">';
                 data.forEach(record => {
-                    const regex = /Name:\s*(.*?)\s*-\s*Time:\s*(.*?)\s*-\s*Email:\s*(.*)/;
+                    const regex = /Name:\s*(.*?)\s*-\s*Last Name:\s*(.*?)\s*-\s*Time:\s*(.*?)\s*-\s*Email:\s*(.*)/;
                     const match = record.match(regex);
                     if (match) {
                         const name = match[1];
-                        const time = match[2];
-                        const email = match[3];
+                        const lastname = match[2];
+                        const time = match[3];
+                        const email = match[4];
 
                         // Create the HTML with a delete button
                         recordsHtml += `
                             <div class="record-row">
                                 <div class="record-item"><strong>Name:</strong> ${name}</div>
+                                <div class="record-item"><strong>Last Name:</strong> ${lastname}</div>
                                 <div class="record-item"><strong>Time:</strong> ${time}</div>
                                 <div class="record-item"><strong>Email:</strong> ${email}</div>
                                 <div class="record-item">
-                                    <button onclick="deleteRecord('${name}', '${time}', '${email}')">Delete</button>
+                                    <button onclick="deleteRecord('${name}', '${lastname}', '${time}', '${email}')">Delete</button>
                                 </div>
                             </div>
                         `;
                     }
                 });
                 recordsHtml += '</div>';
-                noteContent.innerHTML = recordsHtml; // Display the notes
+                timeContent.innerHTML = recordsHtml; // Display the notes
             } else {
-                noteContent.innerHTML = "<p>No records found for this day.</p>"; // If no records found
+                timeContent.innerHTML = "<p>No records found for this day.</p>"; // If no records found
             }
             modal.style.display = "block"; // Show the modal
         })
         .catch(error => {
             console.error('Error fetching records:', error);
-            noteContent.innerHTML = "<p>Error loading records.</p>"; // Display error
+            timeContent.innerHTML = "<p>Error loading records.</p>"; // Display error
             modal.style.display = "block"; // Show the modal even if error occurs
         });
 }
 
 // Function to delete a record
-function deleteRecord(name, time, email) {
-    const confirmation = confirm(`Are you sure you want to delete the record:\nName: ${name}, Time: ${time}, Email: ${email}?`);
+function deleteRecord(name, lastName, time, email) {
+    const confirmation = confirm(`Are you sure you want to delete the appointment:\nName: ${name}, LastName: ${lastName}, Time: ${time}, Email: ${email}?`);
     if (!confirmation) return;
 
     fetch(`/calendar/delete-record?name=${encodeURIComponent(name)}`, {
@@ -148,7 +151,7 @@ function deleteRecord(name, time, email) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Failed to delete record! Status: ${response.status}`);
+                throw new Error(`Failed to cancel the appointment! Status: ${response.status}`);
             }
             return response.text();
         })
@@ -157,40 +160,50 @@ function deleteRecord(name, time, email) {
             openNoteModal(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()); // Refresh the modal
         })
         .catch(error => {
-            console.error('Error deleting record:', error);
-            alert('Failed to delete the record. Please try again.');
+            console.error('Error deleting appointment:', error);
+            alert('Failed to delete the appointment. Please try again.');
         });
 }
 
 function saveNote() {
     const noteDate = document.getElementById("note-date").textContent;
-    const noteInput = document.getElementById("note-input").value;
+    const time = document.getElementById("time-input").value;
     const patientName = document.getElementById("name").value
+    const patientLastName = document.getElementById("last-name").value
     const patientEmail = document.getElementById("email").value
 
     // Ensure all fields are filled out
-    if (!noteInput || !patientName || !patientEmail) {
-        alert("All fields are mandatory. Please fill out the note, name, and email.");
+    if (!time || !patientName || !patientEmail) {
+        alert("Please fill out all fields before adding the note.");
         return;
     }
 
     if(noteDate){
         // Send a POST request to save or update the note
-        fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}&name=${patientName}&email=${patientEmail}`, {
+        fetch(`/calendar/add-note?date=${noteDate}&time=${time}&name=${patientName}&lastName=${patientLastName}&email=${patientEmail}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
         }).then(response => {
-            alert(`Note saved for ${noteDate}`);
+            alert(`the appointment was set for ${noteDate}`);
             document.getElementById("note-modal").style.display = "none"; // Close the modal
         }).catch(error => console.error('Error:', error));
     }else{
         alert("Please select a date before submitting!");
         return;
     }
+    const preferredDateSpan = document.getElementById("preferred-date");
+    preferredDateSpan.textContent = ""; // Clear the content
+}
 
+function notifyMaxLength(textarea) {
+    const maxLength = textarea.maxLength; // Get the maxLength directly from the element
+    const currentLength = textarea.value.length;
 
+    if (currentLength === maxLength) {
+        alert(`You have reached the maximum length of ${maxLength} characters.`);
+    }
 }
 
 

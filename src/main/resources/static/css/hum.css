@@ -9,6 +9,7 @@ body {
     color: #333;
 }
 
+
 /* Header Container */
 .header-container {
     display: flex;
@@ -16,6 +17,7 @@ body {
     justify-content: space-between;
     background-color: #5f9ea0;
     color: white;
+    text-align: left;
     padding: 10px 20px;
 }
 
@@ -62,8 +64,6 @@ body {
     background-color: #4a8b8d;
     color: #ffebcd;
 }
-
-
 .container {
     margin: 50px auto;
     max-width: 800px;
