@@ -69,14 +69,31 @@
 </table>
 </div>
 
-<div class="modal-content" style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
     <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;"></span>
     <h3 style="text-align: left; margin-left: 0; padding-left: 10px; width: 60%; max-width: 400px; font-size: 20px; box-sizing: border-box;">
-        Preferred date: <span id="note-date"></span>
-    </h3>    <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Preferred time:"></textarea>
-    <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your name:"></textarea>
-    <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Your email:"></textarea>
-    <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;" >Add Note</button>
+        Apply Appointment for: <span id="preferred-date"></span>
+    </h3>
+
+    <!-- Time Picker with Placeholder -->
+    <input id="time-input" type="time" style="width: 60%; max-width: 422px; padding: 10px; font-size: 16px; box-sizing: border-box;">
+
+    <!-- Name Field -->
+    <textarea
+            id="name"
+            style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;"
+            placeholder="Name: "
+            maxlength="25"
+            oninput="notifyMaxLength(this)">
+    </textarea>
+
+    <textarea id="last-name"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Last Name: " maxlength="25"></textarea>
+
+    <!-- Email Field -->
+    <textarea id="email"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Email: " maxlength="30"></textarea>
+
+    <!-- Confirm Button -->
+    <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;">Confirm</button>
 </div>
 
 

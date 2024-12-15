@@ -173,7 +173,7 @@ function saveNote() {
     const patientEmail = document.getElementById("email").value
 
     // Ensure all fields are filled out
-    if (!time || !patientName || !patientEmail) {
+    if (!time || !patientName || !patientLastName || !patientEmail) {
         alert("Please fill out all fields before adding the note.");
         return;
     }
@@ -205,7 +205,6 @@ function notifyMaxLength(textarea) {
         alert(`You have reached the maximum length of ${maxLength} characters.`);
     }
 }
-
 
 function closeNoteModal() {
     const modal = document.getElementById("note-modal");

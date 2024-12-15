@@ -99,8 +99,8 @@ function setupModal() {
 
 function openNoteModal(year, month, day) {
     const modal = document.getElementById("note-modal");
-    const noteDate = document.getElementById("note-date");
-    const noteInput = document.getElementById("note-input");
+    const noteDate = document.getElementById("preferred-date");
+    const time = document.getElementById("time-input");
     const patientName = document.getElementById("name");
     const patientEmail = document.getElementById("email");
 
@@ -108,7 +108,7 @@ function openNoteModal(year, month, day) {
     noteDate.textContent = formattedDate;
 
 
-    noteInput.value = notes[formattedDate] || ""; // Pre-fill with existing note if available
+    time.value = notes[formattedDate] || ""; // Pre-fill with existing note if available
     patientName.value = ""; // Clear the name field
     patientEmail.value = ""; // Clear the email field
 
@@ -118,32 +118,48 @@ function openNoteModal(year, month, day) {
 
 
 function saveNote() {
-    const noteDate = document.getElementById("note-date").textContent;
-    const noteInput = document.getElementById("note-input").value;
+    const noteDate = document.getElementById("preferred-date").textContent;
+    const time = document.getElementById("time-input").value;
     const patientName = document.getElementById("name").value
+    const patientLastName = document.getElementById("last-name").value
     const patientEmail = document.getElementById("email").value
 
     // Ensure all fields are filled out
-    if (!noteInput || !patientName || !patientEmail) {
-        alert("All fields are mandatory. Please fill out the note, name, and email.");
+    if (!time || !patientName || !patientLastName || !patientEmail) {
+        alert("Please fill out all fields before adding the note.");
         return;
     }
 
     if(noteDate){
         // Send a POST request to save or update the note
-        fetch(`/calendar/add-note?date=${noteDate}&content=${noteInput}&name=${patientName}&email=${patientEmail}`, {
+        fetch(`/calendar/add-note?date=${noteDate}&time=${time}&name=${patientName}&lastName=${patientLastName}&email=${patientEmail}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
         }).then(response => {
-            alert(`Your request has been saved for ${noteDate}`);
+            alert(`the appointment was set for ${noteDate}`);
             document.getElementById("note-modal").style.display = "none"; // Close the modal
         }).catch(error => console.error('Error:', error));
     }else{
         alert("Please select a date before submitting!");
         return;
     }
-
-
+    const preferredDateSpan = document.getElementById("preferred-date");
+    preferredDateSpan.textContent = ""; // Clear the content
 }
+
+function notifyMaxLength(textarea) {
+    const maxLength = textarea.maxLength; // Get the maxLength directly from the element
+    const currentLength = textarea.value.length;
+
+    if (currentLength === maxLength) {
+        alert(`You have reached the maximum length of ${maxLength} characters.`);
+    }
+}
+
+function closeNoteModal() {
+    const modal = document.getElementById("note-modal");
+    modal.style.display = "none"; // Hide the modal
+}
+
