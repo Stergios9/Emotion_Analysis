@@ -6,13 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
     <style>
-        /* Reset body margins and paddings */
-        body {
-            margin: 0;
-            padding: 0;
-        }
 
-        /* Style for the image container */
         .image-container {
             display: flex;
             justify-content: center;
@@ -21,20 +15,6 @@
             overflow: hidden; /* Ensures the image doesn't overflow the container */
         }
 
-        /* Style for the image itself */
-        .image-container img {
-            width: 100%; /* Ensures the image covers the container width */
-            height: 100%; /* Ensures the image covers the container height */
-            object-fit: cover; /* Ensures the image maintains aspect ratio while covering the area */
-        }
-
-        /* Optional footer style */
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
-        }
     </style>
 </head>
 <body>
@@ -44,14 +24,16 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/welcome">HOME</a>
+
             <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/stats"  class="highlighted-text">STATISTICS</a>
                 <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
                 <a href="/patients">PATIENTS</a>
                 <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
                 <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
-            <a href="/logout">LOGOUT</a>
 
         </div>
     </div>

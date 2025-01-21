@@ -1,11 +1,3 @@
-/*body {*/
-/*    font-family: Arial, sans-serif;*/
-/*    margin: 20px;*/
-/*    padding: 20px;*/
-/*    background-color: #f9f9f9;*/
-/*    color: #333;*/
-/*}*/
-
 
 body {
     font-family: Arial, sans-serif;
@@ -15,13 +7,12 @@ body {
     text-align: center;
     color: #333;
 }
-
 /* Header Container */
 .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #5f9ea0;
+    background-color: #1A494D;
     color: white;
     text-align: left;
     padding: 10px 20px;
@@ -30,7 +21,7 @@ body {
 /* Title Styling */
 .header-container h1 {
     margin: 0;
-    font-size: 2.5em;
+    font-size: 30px;
     flex: 1;
     text-align: center;
 }
@@ -43,14 +34,14 @@ body {
     border: none;
     cursor: pointer;
     padding: 10px;
-    border-radius: 5px;
 }
+
 .menu {
     display: none;
     position: absolute;
-    top: 60px;
-    left: 20px;
-    background-color: rgba(95, 158, 160, 0.95);  /* Transparent teal */
+    top: 30px;
+    /*left: 20px;*/
+    background-color: #1A494D;
     border-radius: 5px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     padding: 10px;
@@ -62,8 +53,8 @@ body {
     display: block;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
-    font-size: 1.2em;
+    padding: 10px 0;
+    text-align: left;
 }
 
 .menu a:hover {
@@ -78,7 +69,7 @@ h2 {
 }
 
 table {
-    width: 90%; /* Increased width */
+    width: 1000px; /* Increased width */
     margin: 0 auto; /* Center the table */
     border-collapse: collapse;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
@@ -92,11 +83,10 @@ th, td {
 }
 
 th {
-    background-color: #5f9ea0;
+    background-color: #307C8C;;
     color: white;
     font-size: 16px;
 }
-
 tr:nth-child(even) {
     background-color: #f2f2f2; /* Alternate row colors */
 }
@@ -104,8 +94,6 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f1f1f1; /* Highlight row on hover */
 }
-
-
 footer {
     margin-top: 20px;
     text-align: center;
@@ -113,7 +101,6 @@ footer {
     padding: 50px;
     color: #777;
 }
-
 .calendar-header {
     display: flex;               /* Use Flexbox layout */
     justify-content: center;     /* Center items horizontally */
@@ -124,10 +111,8 @@ footer {
     background-color: #f4f4f4;   /* Optional background */
     border-bottom: 1px solid #ddd; /* Optional border for separation */
 }
-
-
 .calendar-header button {
-    background-color: #5f9ea0;    /* Blue button color */
+    background-color: #307C8C;    /* Blue button color */
     color: white;                 /* Text color */
     border: none;                 /* Remove border */
     padding: 10px 20px;           /* Add padding */
@@ -162,4 +147,21 @@ footer {
     padding: 0 10px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.image-container {
+    height: 50vh;
+}
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.highlighted-text {
+    font-weight: bold; /* Make the text bold */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow */
+    background: brown; /* Add brown background */
+    color: white; /* Optional: Make text stand out on brown background */
+    pointer-events: none; /* Disable clicking */
+    cursor: default; /* Indicate it's not clickable */
+    text-decoration: none; /* Remove underline */
 }

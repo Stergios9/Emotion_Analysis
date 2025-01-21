@@ -19,6 +19,12 @@ public class PsychologistServiceImpl implements PsychologistService {
     private PsychologistRepository psychologistRepository;
 
     @Override
+    public List<Psychologist> findAllPsychologists() {
+        List<Psychologist> allPsychologists = psychologistRepository.findAll();
+        return allPsychologists;
+    }
+
+    @Override
     @Transactional
     public Psychologist addPsychologist(Psychologist psychologist) {
         return psychologistRepository.save(psychologist);
@@ -37,12 +43,6 @@ public class PsychologistServiceImpl implements PsychologistService {
     @Override
     public List<Psychologist> findPsychologistsByLocation(Location location) {
         return psychologistRepository.findByLocation(location);
-    }
-
-    @Override
-    public List<Psychologist> findAllPsychologists() {
-        List<Psychologist> allPsychologists = psychologistRepository.findAll();
-        return allPsychologists;
     }
 
     @Override

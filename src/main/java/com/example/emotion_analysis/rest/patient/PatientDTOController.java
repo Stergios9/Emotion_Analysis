@@ -1,11 +1,22 @@
 package com.example.emotion_analysis.rest.patient;
 
 import com.example.emotion_analysis.dto.PatientDTO;
-import com.example.emotion_analysis.entity.Patient;
+import com.example.emotion_analysis.entity.*;
+import com.example.emotion_analysis.service.emotionAnalysis.EmotionAnalysisService;
+import com.example.emotion_analysis.service.location.LocationService;
 import com.example.emotion_analysis.service.patient.PatientService;
+import com.example.emotion_analysis.service.psychologists.PsychologistService;
+import com.example.emotion_analysis.service.sentiment.SentimentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -14,6 +25,18 @@ public class PatientDTOController {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private SentimentService sentimentService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private EmotionAnalysisService emotionAnalysisService;
+
+    @Autowired
+    private PsychologistService psychologistService;
 
     // GET all patients
     @GetMapping
@@ -102,5 +125,42 @@ public class PatientDTOController {
         }
         return patientService.delete(patientId);
     }
+    @PostMapping("/addPatient")
+    public ResponseEntity<?> addPatientByAdmin(@RequestParam("firstName") String firstName,
+                                               @RequestParam("lastName") String lastName,
+                                               @RequestParam("age") int age,
+                                               @RequestParam("gender") String gender,
+                                               @RequestParam("location") String location,
+                                               @RequestParam("comment") String comment) {
+        try {
+            // Find Location object by description
+            Location locationOfPatient = locationService.findByCity(location);
+            if (locationOfPatient == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid location: " + location);
+            }
+
+            // Analyze sentiment from the comment
+            String emotion = sentimentService.analyzeSentiment(comment);
+            Sentiment sentiment = sentimentService.findSentimentByDescription(emotion);
+            if (sentiment == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid sentiment for the given comment.");
+            }
+
+            // Create a new patient and associate sentiment
+            Set<Sentiment> sentiments = new HashSet<>();
+            sentiments.add(sentiment);
+            Patient patient = new Patient(firstName, lastName, age, gender, locationOfPatient, comment, LocalDateTime.now(), sentiments);
+
+            // Save the patient entity
+            patientService.save(patient);
+            return ResponseEntity.status(HttpStatus.CREATED).body(patient); // Return the created Patient entity
+
+        } catch (Exception ex) {
+            // Log the error and return a generic error response
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding the patient.");
+        }
+    }
+
 }
 

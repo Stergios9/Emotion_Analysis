@@ -13,20 +13,27 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/welcome">HOME</a>
 
             <th:block th:if="${role == 'USER'}">
-                <a href="/about">ABOUT</a>
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
                 <a href="/contact">CONTACT</a>
                 <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/psychologists" class="highlighted-text">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
 
-            <!-- Visible only for admins -->
             <th:block th:if="${role == 'ADMIN'}">
-                <a href="/stats">BACK</a>
+                <a href="/welcome">HOME</a>
+                <a href="/stats"  class="highlighted-text">STATISTICS</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/patients">PATIENTS</a>
+                <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
+                <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
-            <a href="/logout">LOGOUT</a>
-            <!-- Example existing link -->
+
         </div>
     </div>
     <h1 style="text-align: center;">Psychological Insights Platform</h1>

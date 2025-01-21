@@ -15,10 +15,22 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/welcome">HOME</a>
-            <a href="/calendar2">SEE APPOITMENTS</a>
-            <a href="/logout">LOGOUT</a>
-            <!-- Example existing link -->
+            <th:block th:if="${role == 'USER'}">
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
+                <a href="/contact">CONTACT</a>
+                <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/calendar2">APPOINTMENTS</a>
+                <a href="/stats">STATISTICS</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
         </div>
     </div>
     <h1 style="text-align: center;">APPOITMENTS</h1>

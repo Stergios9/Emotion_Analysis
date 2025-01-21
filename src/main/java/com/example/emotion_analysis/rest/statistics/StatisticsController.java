@@ -37,10 +37,19 @@ public class StatisticsController {
     // ************************************** Histogram ******************************************  //
 
     @GetMapping("/sentiment/dominant")
-    public String getMostFrequentSentiment(Model model) {
-        List<Object[]> results = patientService.findMostFrequentSentiment();
-        model.addAttribute("results", results);
-        return "mostFrequentSentiment"; // Refers to mostFrequentSentiment.html
+    public String getMostFrequentSentiment(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            String role = user.getRole();
+            List<Object[]> results = patientService.findMostFrequentSentiment();
+            if ("ADMIN".equalsIgnoreCase(role)){
+                model.addAttribute("role", role);
+                model.addAttribute("results", results);
+                return "mostFrequentSentiment"; // Refers to mostFrequentSentiment.html
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
 
     // ****************************************************************************************** //
@@ -48,15 +57,19 @@ public class StatisticsController {
     // ************************* Counts each sentiment per gender ******************************  //
 
     @GetMapping("/sentiment/gender")
-    public String mostCommonSentimentByGender(Model model) {
-        // Fetch the sentiment data
-        List<Object[]> sentimentData = patientService.getMostCommonSentimentByGender();
-
-        // Adding the data to the model so that it can be accessed in the view
-        model.addAttribute("sentimentData", sentimentData);
-
-        // Return the view name (Thymeleaf template)
-        return "sentimentByGender";  // View name, e.g. sentimentByGender.html
+    public String mostCommonSentimentByGender(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Object[]> sentimentData = patientService.getMostCommonSentimentByGender();
+            String role = user.getRole();
+            if ("ADMIN".equalsIgnoreCase(role)){
+                model.addAttribute("role", role);
+                model.addAttribute("sentimentData", sentimentData);
+                return "sentimentByGender";  // View name, e.g. sentimentByGender.html
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
 
     // ****************************************************************************************** //
@@ -64,23 +77,27 @@ public class StatisticsController {
     // *******************  Finds for each sentiment the percentage by gender *******************  //
 
     @GetMapping("/sentiment/percentage")
-    public String sentimentPercentageByGender(Model model) {
+    public String sentimentPercentageByGender(HttpSession session,Model model) {
         // Fetch the sentiment percentage data
-        List<Object[]> sentimentData = patientService.getSentimentPercentageByGender();
-
-        // Add data to the model
-        model.addAttribute("sentimentData", sentimentData);
-
-        // Return the view name
-        return "sentimentPercentage"; // Corresponding HTML template
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            List<Object[]> sentimentData = patientService.getSentimentPercentageByGender();
+            String role = user.getRole();
+            if ("ADMIN".equalsIgnoreCase(role)) {
+                model.addAttribute("role", role);
+                model.addAttribute("sentimentData", sentimentData);
+                return "sentimentPercentage"; // Corresponding HTML template
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
+
 
     @GetMapping("/sentiment/percentage/json")
     @ResponseBody
     public List<Object[]> sentimentPercentageByGender() {
         return patientService.getSentimentPercentageByGender();
     }
-
-
 
 }

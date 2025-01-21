@@ -15,20 +15,23 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/welcome">HOME</a>
             <th:block th:if="${role == 'USER'}">
-                <a href="/about">ABOUT</a>
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
                 <a href="/contact">CONTACT</a>
                 <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar" class="highlighted-text">BOOK APPOINTMENT</a>
                 <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
 
             <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/calendar2">APPOINTMENT</a>
                 <a href="/stats">STATISTICS</a>
-                <a href="/calendar2">APPOITMENTS</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
-            <a href="/logout">LOGOUT</a>
-            <!-- Example existing link -->
+
         </div>
     </div>
     <h1 style="text-align: center;">CALENDAR</h1>
@@ -79,18 +82,14 @@
     <input id="time-input" type="time" style="width: 60%; max-width: 422px; padding: 10px; font-size: 16px; box-sizing: border-box;">
 
     <!-- Name Field -->
-    <textarea
-            id="name"
-            style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;"
-            placeholder="Name: "
-            maxlength="25"
-            oninput="notifyMaxLength(this)">
-    </textarea>
 
-    <textarea id="last-name"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Last Name: " maxlength="25"></textarea>
+
+    <textarea id="name"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Name:" maxlength="20" oninput="notifyMaxLength(this)"></textarea>
+
+    <textarea id="last-name"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Last Name:" maxlength="20"  oninput="notifyMaxLength(this)"></textarea>
 
     <!-- Email Field -->
-    <textarea id="email"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Email: " maxlength="30"></textarea>
+    <textarea id="email"  style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="Email: " maxlength="25"  oninput="notifyMaxLength(this)"></textarea>
 
     <!-- Confirm Button -->
     <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;">Confirm</button>

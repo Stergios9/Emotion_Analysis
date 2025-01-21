@@ -37,6 +37,22 @@ public class PatientController {
         return "loginForm";
     }
 
+    @GetMapping("/addPatient")
+    public String addPatient(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+
+        if (user != null) {
+
+            String role = user.getRole();
+            if (role.equals("admin")) {
+                model.addAttribute("role", "admin");
+                return "addPatient";
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
     @GetMapping("/id/{patientId}")
     public String getPatientById(@PathVariable("patientId") int patientId, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
@@ -144,6 +160,7 @@ public class PatientController {
     @ResponseBody
     public String deletePatientById(@PathVariable int patientId) {
         Patient thePatient = patientService.findById(patientId);
+        System.out.println("\n\n\n Patient: " + thePatient+"\n\n");
         if (thePatient == null) {
             throw new RuntimeException("Patient with id '" + patientId+"' not found");
         }
@@ -192,4 +209,6 @@ public class PatientController {
     }
 
     // *********************************************************************************************** //
+
+
 }

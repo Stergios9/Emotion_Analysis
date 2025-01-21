@@ -5,121 +5,7 @@
     <title>Welcome Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
 
-        /* Header Container */
-        .header-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #5f9ea0;
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .header-container h1 {
-            margin: 0;
-            font-size: 1.5em;
-            flex: 1;
-            text-align: center;
-        }
-
-        .hamburger-menu button {
-            background-color: transparent;
-            color: white;
-            font-size: 1.5em;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 10px;
-            background-color: #5f9ea0;
-            border-radius: 5px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        .menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px 0;
-            text-align: left;
-        }
-
-        .menu a:hover {
-            background-color: #4a8b8d;
-        }
-
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 120px);
-            overflow: hidden;
-        }
-
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .header-container h1 {
-                font-size: 1.2em;
-            }
-
-            .hamburger-menu button {
-                font-size: 1.2em;
-            }
-
-            .image-container {
-                height: calc(100vh - 100px); /* Slightly adjusted for smaller devices */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .header-container h1 {
-                font-size: 1em;
-                text-align: left;
-                margin-bottom: 10px;
-            }
-
-            .hamburger-menu button {
-                font-size: 1em;
-            }
-
-            .image-container {
-                height: 50vh; /* Smaller height for very small screens */
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -130,20 +16,23 @@
         <div class="menu" id="menu-content">
 
             <th:block th:if="${role == 'USER'}">
+                <a href="/welcome" class="highlighted-text">HOME</a>
                 <a href="about">ABOUT</a>
                 <a href="/contact">CONTACT</a>
                 <a href="index">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOITMENT</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
                 <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
 
-            <!-- Visible only for admins -->
             <th:block th:if="${role == 'ADMIN'}">
-                <a href="/calendar2">APPOITMENTS</a>
+                <a href="/welcome" class="highlighted-text">HOME</a>
+                <a href="/calendar2">APPOINTMENTS</a>
                 <a href="/stats">STATISTICS</a>
+                <a href="/administration">ADMINISTRATION</a>
+                <a href="/logout">LOGOUT</a>
             </th:block>
 
-            <a href="/logout">LOGOUT</a>
         </div>
     </div>
     <h1>Psychological Insights Platform</h1>

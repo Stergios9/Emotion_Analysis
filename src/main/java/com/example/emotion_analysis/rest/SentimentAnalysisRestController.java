@@ -47,14 +47,14 @@ public class SentimentAnalysisRestController {
                                 @RequestParam("comment") String comment,
                                 Model model){
 
-        List<String> descriptions = sentimentService.findDescriptions();
-
         // Find Location object by description
         Location locationOfPatient = locationService.findByCity(location);
 
         // Find emotion from database by the inserted comment --
         String emotion = sentimentService.analyzeSentiment(comment);
+
         Sentiment sentiment = sentimentService.findSentimentByDescription(emotion);  // Fetching existing Sentiment
+
         emotion = emotion.replace("_"," - ");
         if (sentiment == null) {
             System.out.println("Sentiment not found for description: " + emotion);

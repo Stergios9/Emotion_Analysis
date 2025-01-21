@@ -1,8 +1,10 @@
 package com.example.emotion_analysis.rest.login;
 
 
+import com.example.emotion_analysis.entity.Patient;
 import com.example.emotion_analysis.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import  com.example.emotion_analysis.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class LoginController {
 
@@ -18,10 +22,35 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Value("${cities}")
+    private List<String> cities;
+
+    @Value("${ages}")
+    private List<Integer> ages;
+
     @GetMapping("/")
     public String loginForm(Model model) {
         return "loginForm";
     }
+
+    @GetMapping("/index")
+    public String MedicalDiagnosis(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        Patient thePatient = new Patient();
+
+        if (user != null) {
+            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
+            model.addAttribute("role", role); // Pass the role to the template
+            model.addAttribute("cities", cities);
+            model.addAttribute("ages", ages);
+            model.addAttribute("patient", thePatient);
+            return "index"; // Return the welcome page
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm"; // If no user is logged in, redirect to login
+    }
+
+
 
     @GetMapping("/about")
     public String aboutForm(HttpSession session, Model model) {
@@ -74,19 +103,6 @@ public class LoginController {
         return "loginForm"; // If no user is logged in, redirect to login
     }
 
-
-    @GetMapping("/index")
-    public String MedicalDiagnosis(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
-
-        if (user != null) {
-            String role = user.getRole(); // Get the role (e.g., "PATIENT" or "DOCTOR")
-            model.addAttribute("role", role); // Pass the role to the template
-            return "index"; // Return the welcome page
-        }
-        model.addAttribute("error", "User not logged in. Please login to access this resource.");
-        return "loginForm"; // If no user is logged in, redirect to login
-    }
 
     @PostMapping("/welcome")
     public String login(@RequestParam String username,

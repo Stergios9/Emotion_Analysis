@@ -296,6 +296,20 @@ public class SentimentServiceImpl implements SentimentService {
         }
         return emotionScores;
     }
+
+    // Method to split tokens based on punctuation
+    private List<String> splitToken(String token) {
+        List<String> result = new ArrayList<>();
+        String[] parts = token.split("(?<=\\p{Punct})|(?=\\p{Punct})");
+
+        for (String part : parts) {
+            if (!part.trim().isEmpty()) {
+                result.add(part.trim());
+            }
+        }
+        return result;
+    }
+
     @Override
     public int findIdBySentiment(String sentimentDescription) {
         return sentimentRepository.findIdByDescription(sentimentDescription);
@@ -311,16 +325,4 @@ public class SentimentServiceImpl implements SentimentService {
         return sentimentRepository.findAllDescriptions();
     }
 
-    // Method to split tokens based on punctuation
-    private List<String> splitToken(String token) {
-        List<String> result = new ArrayList<>();
-        String[] parts = token.split("(?<=\\p{Punct})|(?=\\p{Punct})");
-
-        for (String part : parts) {
-            if (!part.trim().isEmpty()) {
-                result.add(part.trim());
-            }
-        }
-        return result;
-    }
 }

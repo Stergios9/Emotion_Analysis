@@ -3,119 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
     <title>Emotion Analysis Platform</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #707b7c;
-        }
-
-        /* Header Container */
-        .header-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #5f9ea0;
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .header-container h1 {
-            margin: 0;
-            font-size: 2em;
-            flex: 1;
-            text-align: center;
-        }
-
-        .hamburger-menu button {
-            background-color: transparent;
-            color: white;
-            font-size: 1.5em;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            background-color: #5f9ea0;
-            border-radius: 5px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        .menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px 0;
-            text-align: left;
-        }
-
-        .menu a:hover {
-            background-color: #4a8b8d;
-        }
-
         .background-container {
             position: relative;
             width: 100%;
-            height: 500px; /* Reduced height for better mobile adaptation */
+            height: 600px; /* Adjusted height */
             background-image: url("/images/page8.jpg");
             background-size: cover;
             background-position: center;
+            margin-bottom: 30px; /* Add space below the background image */
         }
 
-        .form-container {
-            margin: 20px auto;
-            width: 100%;
+        form {
+            max-width: 1000px;
+            margin: 0 auto; /* Center the form horizontally */
             padding: 20px;
             background-color: #f2f3f4;
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            min-height: 500px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .form-row {
+            display: grid;
+            grid-template-columns: 150px auto; /* Fixed width for labels, flexible for inputs */
+            align-items: center; /* Align labels and inputs vertically */
+            margin-bottom: 10px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .form-group label {
+        .form-row label {
+            text-align: left; /* Ensure labels are left-aligned */
             font-size: 1em;
-            font-weight: 600;
+            font-weight: bold;
             color: #333;
         }
 
-        .form-group input[type="text"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
+        .form-row input[type="text"],
+        .form-row select,
+        .form-row textarea {
+            width: 100%; /* Full width for the input fields */
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
-            font-size: 1em;
+            font-size: 16px;
         }
 
         textarea {
-            height: 120px;
+            height: 80px; /* Adjust height for textareas */
         }
 
         button {
+            display: block;
+            margin: 20px auto; /* Center the button */
             background-color: #5f9ea0;
             color: white;
             border: none;
@@ -124,54 +65,12 @@
             font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-top: 20px;
-            align-self: center;
         }
 
         button:hover {
             background-color: #2874a6;
         }
 
-        @media (max-width: 768px) {
-            .header-container h1 {
-                font-size: 1.5em;
-            }
-
-            .background-container {
-                height: 200px;
-            }
-
-            .form-group label {
-                font-size: 0.9em;
-            }
-
-            button {
-                font-size: 0.9em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .header-container h1 {
-                text-align: left;
-                font-size: 1.2em;
-                margin-bottom: 10px;
-            }
-
-            .hamburger-menu button {
-                font-size: 1.2em;
-            }
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 20px;
-        }
     </style>
 </head>
 <body>
@@ -180,12 +79,22 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="welcome">HOME</a>
-            <a href="/about">ABOUT</a>
-            <a href="/contact">CONTACT</a>
-            <a href="/calendar">BOOK APPOINTMENT</a>
-            <a href="/calendar2">SEE APPOINTMENTS</a>
-            <a href="/logout">LOGOUT</a>
+            <th:block th:if="${role == 'USER'}">
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
+                <a href="/contact">CONTACT</a>
+                <a href="index" class="highlighted-text">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/calendar2">APPOINTMENTS</a>
+                <a href="/stats">STATISTICS</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
         </div>
     </div>
     <h1>Emotion Analysis Platform</h1>
@@ -193,78 +102,51 @@
 
 <div class="background-container"></div>
 
-<div class="form-container">
-    <form action="/medicalDiagnosis" method="post">
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" required>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required>
-        </div>
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="text" id="age" name="age" required>
-        </div>
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="" disabled selected>Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <select id="location" name="location" required>
-                <option value="" disabled selected>Select your location</option>
-                <option value="Thessaloniki">Thessaloniki</option>
-                <option value="Athens">Athens</option>
-                <option value="Crete">Crete</option>
-                <option value="Serres">Serres</option>
-                <option value="Kavala">Kavala</option>
-                <option value="Patra">Patra</option>
-                <option value="Rhodes">Rhodes</option>
-                <option value="Iwannina">Iwannina</option>
-                <option value="Zakinthos">Zakinthos</option>
-                <option value="Larisa">Larisa</option>
-                <option value="Santorini">Santorini</option>
-                <option value="Piraeus">Piraeus</option>
-                <option value="Trikala">Trikala</option>
-                <option value="Ithaki">Ithaki</option>
-                <option value="Sparta">Sparta</option>
-                <option value="Salamina">Salamina</option>
-                <option value="Korinthos">Korinthos</option>
-                <option value="Cyprous">Cyprous</option>
-                <option value="Chalkidiki">Chalkidiki</option>
-                <option value="Komotini">Komotini</option>
-                <option value="Alexandroupoli">Alexandroupoli</option>
-                <option value="Katerini">Katerini</option>
-                <option value="Volos">Volos</option>
-                <option value="Lamia">Lamia</option>
-                <option value="Karditsa">Karditsa</option>
-                <option value="Kozani">Kozani</option>
-                <option value="Xanthi">Xanthi</option>
-                <option value="Didymoteicho">Didymoteicho</option>
-                <option value="Orestiada">Orestiada</option>
-                <option value="Tripoli">Tripoli</option>
-                <option value="Kalamata">Kalamata</option>
-                <option value="Nafplio">Nafplio</option>
-                <option value="Arta">Arta</option>
-                <option value="Gaudos">Gaudos</option>
-                <option value="Nigrita">Nigrita</option>
-                <option value="Syros">Syros</option>
 
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="comment">Share Your Emotions:</label>
-            <textarea id="comment" name="comment" placeholder="Describe the emotions that most affect your daily life" required></textarea>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</div>
+
+<form th:action="@{/medicalDiagnosis}" th:object="${patient}" method="POST">
+    <div class="form-row">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}">
+    </div>
+
+    <div class="form-row">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}">
+    </div>
+
+    <div class="form-row">
+        <label for="age">Age:</label>
+        <select id="age" th:field="*{age}">
+            <option th:each="tempAge : ${ages}" th:value="${tempAge}" th:text="${tempAge}"></option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="gender">Gender:</label>
+        <select id="gender" th:field="*{gender}">
+            <option th:value="Male">Male</option>
+            <option th:value="Female">Female</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="location">Location:</label>
+        <select id="location" th:field="*{location}" required>
+            <option th:each="tempCity : ${cities}" th:value="${tempCity}" th:text="${tempCity}"></option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="comment">How you feel ?</label>
+        <textarea id="comment" name="comment" placeholder="Describe the emotions that most affect your daily life" required></textarea>
+    </div>
+
+
+    <button type="submit">Submit</button>
+</form>
+
+
 
 <script>
     function toggleMenu() {

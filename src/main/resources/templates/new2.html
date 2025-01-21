@@ -13,10 +13,13 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="welcome">HOME</a>
-            <a href="index">RETRY</a>
-            <a href="/logout">LOGOUT</a>
-
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
+                <a href="/contact" class="highlighted-text">CONTACT</a>
+                <a href="index" class="highlighted-text">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
         </div>
     </div>
 </div>
@@ -27,26 +30,43 @@
     <p><strong>Predicted sentiment:</strong> <span th:text="${emotion}"></span></p>
 
     <h2>Medical Diagnosis</h2>
-    <p>
-        Dear <span th:text="${firstName}"></span>,
+    <p style="font-style: italic; font-size: 22px">
+
+    Dear <span th:text="${firstName}"></span>,
         <span th:text="${diagnosis}"></span>
     </p>
 
     <h2>Relaxation Techniques</h2>
-    <p>
+    <p style="font-style: italic; font-size: 22px">
         <span th:text="${techniques}"></span>
     </p>
 
     <h2>Recommended Health Professionals</h2>
     <ul>
         <li th:each="professional : ${professionals}">
-            <span class="label">Name:</span><span class="value" th:text="${professional.name}"></span>
-            <span class="label">Specialization:</span><span class="value" th:text="${professional.specialization}"></span>
-            <span class="label">Phone:</span><span class="value" th:text="${professional.getPhone()}"></span>
-            <span class="label">Email:</span><span class="value" th:text="${professional.getEmail()}"></span>
-            <span class="label">City:</span><span class="value" th:text="${professional.getLocation().getCity()}"></span>
+            <div class="professional-item">
+                <span class="label">Name:</span>
+                <span class="value" th:text="${professional.name}"></span>
+            </div>
+            <div class="professional-item">
+                <span class="label">Specialization:</span>
+                <span class="value" th:text="${professional.specialization}"></span>
+            </div>
+            <div class="professional-item">
+                <span class="label">Phone:</span>
+                <span class="value" th:text="${professional.getPhone()}"></span>
+            </div>
+            <div class="professional-item">
+                <span class="label">Email:</span>
+                <span class="value" th:text="${professional.getEmail()}"></span>
+            </div>
+            <div class="professional-item">
+                <span class="label">City:</span>
+                <span class="value" th:text="${professional.getLocation().getCity()}"></span>
+            </div>
         </li>
     </ul>
+
 </div>
 <script>
     function toggleMenu() {

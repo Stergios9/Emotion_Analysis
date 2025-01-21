@@ -5,6 +5,7 @@
     <title>Contact Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -13,14 +14,12 @@
             text-align: center;
             color: #333;
         }
-
-
         /* Header Container */
         .header-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: #5f9ea0;
+            background-color: #1A494D;
             color: white;
             text-align: left;
             padding: 10px 20px;
@@ -29,7 +28,7 @@
         /* Title Styling */
         .header-container h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2.0em;
             flex: 1;
             text-align: center;
         }
@@ -44,12 +43,13 @@
             padding: 10px;
             border-radius: 5px;
         }
+
         .menu {
             display: none;
             position: absolute;
             top: 60px;
             left: 20px;
-            background-color: rgba(95, 158, 160, 0.95);  /* Transparent teal */
+            background-color: #1A494D;
             border-radius: 5px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             padding: 10px;
@@ -61,8 +61,8 @@
             display: block;
             color: white;
             text-decoration: none;
-            padding: 10px 15px;
-            font-size: 1.2em;
+            padding: 10px 0;
+            text-align: left;
         }
 
         .menu a:hover {
@@ -71,8 +71,28 @@
         }
 
         h2 {
-            color: #5f9ea0;
+            text-align: center;
+            color: #444;
+            margin-bottom: 30px;
         }
+        .highlighted-text {
+            font-weight: bold; /* Make the text bold */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow */
+            background: brown; /* Add brown background */
+            color: white; /* Optional: Make text stand out on brown background */
+            pointer-events: none; /* Disable clicking */
+            cursor: default; /* Indicate it's not clickable */
+            text-decoration: none; /* Remove underline */
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            padding: 50px;
+            color: #777;
+        }
+
 
         p {
             font-size: 1.2em;
@@ -117,7 +137,7 @@
 
         button {
             background-color: #5f9ea0;
-            color: white;
+            color: red;
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
@@ -128,28 +148,13 @@
         }
 
         button:hover {
-            background-color: #45a049;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            background-color: #5f9ea0;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        a:hover {
-            background-color: #45a049;
+            background-color: #1A494D;
         }
 
         @media (max-width: 768px) {
             .container {
                 width: 95%;
             }
-
             .form-group label,
             .form-group input[type="text"],
             .form-group input[type="email"],
@@ -168,8 +173,9 @@
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
             <a href="/about">ABOUT</a>
+            <a href="/contact" class="highlighted-text">CONTACT</a>
             <a href="index">MEDICAL DIAGNOSIS</a>
-            <a href="/calendar">BOOK APPOITMENT</a>
+            <a href="/calendar">BOOK APPOINTMENT</a>
             <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
             <a href="/logout">LOGOUT</a>
         </div>
@@ -201,7 +207,6 @@
         <button type="submit">Send Message</button>
     </form>
 
-    <a href="index.html">Return to Home</a>
 </div>
 
 <script>

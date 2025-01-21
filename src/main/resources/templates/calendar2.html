@@ -50,13 +50,24 @@
   <div class="hamburger-menu">
     <button onclick="toggleMenu()">☰</button>
     <div class="menu" id="menu-content">
-      <a href="/welcome">HOME</a>
-      <!-- Visible only for admins -->
-      <th:block th:if="${role == 'ADMIN'}">
-        <a href="/stats">STATISTICS</a>
+      <th:block th:if="${role == 'USER'}">
+        <a href="/welcome">HOME</a>
+        <a href="about">ABOUT</a>
+        <a href="/contact">CONTACT</a>
+        <a href="index">MEDICAL DIAGNOSIS</a>
+        <a href="/calendar">BOOK APPOINTMENT</a>
+        <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+        <a href="/logout">LOGOUT</a>
       </th:block>
 
-      <a href="/logout">LOGOUT</a>
+      <th:block th:if="${role == 'ADMIN'}">
+        <a href="/welcome">HOME</a>
+        <a href="/calendar2" class="highlighted-text">APPOINTMENT</a>
+        <a href="/stats">STATISTICS</a>
+        <a href="/administration">ADMINISTRATION</a>
+        <a href="/logout">LOGOUT</a>
+      </th:block>
+
     </div>
   </div>
   <h1 style="text-align: center;">CALENDAR</h1>

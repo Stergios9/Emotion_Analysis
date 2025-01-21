@@ -2,31 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome Page</title>
+    <title>Administration Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+
 </head>
 <body>
 
-
-<!-- Header Container with Title -->
+<!-- Header Container with Hamburger Menu -->
 <div class="header-container">
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/calendar">CALENDAR</a>
-            <a href="/calendar2">APPOITMENTS</a>
-            <a href="/statistics">STATISTICS</a>
-            <a href="/logout">LOGOUT</a>
-            <!-- Example existing link -->
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="#" class="highlighted-text" onclick="toggleSubMenu()">ADMINISTRATION</a>
+                <a href="/addPatient">ADD PATIENT</a>
+                <a href="/updatePatient">UPDATE PATIENT</a>
+                <a href="/deletePatient">DELETE PATIENT</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
         </div>
     </div>
-    <h1 style="text-align: center;">Psychological Insights Platform</h1>
-</div>
+    <h1>ADMINISTRATION</h1>
 
+    <!-- Right-side submenu -->
+    <div class="submenu" id="submenu-content" style="display: none;">
+        <a href="/deletePatient">DELETE PATIENT</a>
+    </div>
+</div>
 <!-- Display error message if login fails -->
 <p th:if="${error}" th:text="${error}" style="color: red;"></p>
 
+<!-- Image Container -->
+<div class="image-container">
+    <img src="images/admin2.jpg" alt="Psychological Insights" style="width: 750px; height: auto;" />
+</div>
 
 <!-- JavaScript for Menu Toggle -->
 <script>

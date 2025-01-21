@@ -3,7 +3,7 @@
 <head>
     <title>Top 5 Most Frequent Sentiments</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/analysis.css}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -29,10 +29,27 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <a href="/welcome">HOME</a>
-            <a href="/stats">BACK</a>
-            <a href="/logout">LOGOUT</a>
-            <!-- Example existing link -->
+
+            <th:block th:if="${role == 'USER'}">
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
+                <a href="/contact">CONTACT</a>
+                <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/stats"  class="highlighted-text">STATISTICS</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/patients">PATIENTS</a>
+                <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
+                <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
         </div>
     </div>
     <h1 style="text-align: center;">Psychological Insights Platform</h1>
