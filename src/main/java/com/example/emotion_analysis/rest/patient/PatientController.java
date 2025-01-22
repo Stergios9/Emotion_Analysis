@@ -31,7 +31,7 @@ public class PatientController {
             model.addAttribute("role", role);
             List<Patient> allPatients = patientService.findAllPatients();
             model.addAttribute("patients", allPatients); // Προσθήκη της λίστας στο μοντέλο
-            return "patients"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+            return "editPatient"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
