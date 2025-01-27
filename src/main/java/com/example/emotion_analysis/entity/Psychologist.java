@@ -22,7 +22,7 @@ public class Psychologist {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -79,10 +79,12 @@ public class Psychologist {
     @Override
     public String toString() {
         return "Psychologist{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", specialization='" + specialization + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", location=" + location.getCity() +
                 '}';
     }
 

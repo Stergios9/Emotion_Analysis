@@ -139,7 +139,9 @@ public class Patient {
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
+    public String getFormattedRegistrationDay() {
+        return registration_day != null ? registration_day.toLocalDate().toString() : "";
+    }
+
+
 }
-
-
-

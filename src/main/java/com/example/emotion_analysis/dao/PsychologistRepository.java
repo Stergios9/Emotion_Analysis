@@ -18,6 +18,8 @@ public interface PsychologistRepository extends JpaRepository<Psychologist, Inte
 
     List<Psychologist> findAll();
 
+    List<Psychologist> findAllByOrderByNameAsc();
+
     String deletePsychologistById(int id);
 
     Psychologist findPsychologistById(int id);

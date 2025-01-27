@@ -1,5 +1,6 @@
 package com.example.emotion_analysis.service.patient;
 
+
 import com.example.emotion_analysis.dao.PatientRepository;
 import com.example.emotion_analysis.entity.Patient;
 import jakarta.transaction.Transactional;
@@ -26,11 +27,16 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public List<Patient> findAllPatientsOrderByLastnameAsc() {
+        return patientRepository.findAllByOrderByLastNameAsc();
+    }
+
+    @Override
     public Patient findById(int theId) {
         Patient result = patientRepository.findById(theId);
-       if (result == null) {
-           return  null;
-       }
+        if (result == null) {
+            return  null;
+        }
         return result;
     }
     @Override

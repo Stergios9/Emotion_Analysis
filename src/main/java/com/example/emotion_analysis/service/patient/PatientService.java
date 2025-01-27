@@ -9,6 +9,8 @@ public interface PatientService {
 
    List<Patient> findAllPatients();
 
+   List<Patient> findAllPatientsOrderByLastnameAsc();
+
    Patient findById(int id);
 
    Patient save(Patient patient);

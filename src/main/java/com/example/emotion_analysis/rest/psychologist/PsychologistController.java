@@ -1,6 +1,7 @@
 package com.example.emotion_analysis.rest.psychologist;
 
 import com.example.emotion_analysis.entity.Location;
+import com.example.emotion_analysis.entity.Patient;
 import com.example.emotion_analysis.entity.Psychologist;
 import com.example.emotion_analysis.entity.User;
 import com.example.emotion_analysis.service.location.LocationServiceImpl;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,8 +30,9 @@ public class PsychologistController {
     @Autowired
     private LocationServiceImpl locationService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    @Value("${cities}")
+    private List<String> allCities;
 
     // ************************************ DELETE METHODS ************************************ //
 
@@ -60,6 +63,7 @@ public class PsychologistController {
 
     // *************************************** GET METHODS ******************************************* //
 
+
     @GetMapping
     public String getAllPsychologists(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
@@ -70,6 +74,105 @@ public class PsychologistController {
             List<Psychologist> allPsychologists = psychologistService.findAllPsychologists();
             model.addAttribute("psychologists", allPsychologists);
             return "psychologists";
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
+    @GetMapping("/list")
+    public String getAllPatients(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        if (user != null) {
+            String role = user.getRole();
+            model.addAttribute("role", role);
+            List<Psychologist> allPsychologists = psychologistService.findAllPsychologistsByNameAsc();
+
+            model.addAttribute("psychologists", allPsychologists);
+
+            if (role.equals("ADMIN")) {
+                return "psychologists/editPsychologist"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+            }
+            else if (role.equals("USER")) {
+                return "psychologists";
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
+    @GetMapping("/psychologistForUpdate")
+    public String showFormForUpdate(@RequestParam("psychologistId") int theId, Model model) {
+        Psychologist thePsychologist = psychologistService.findById(theId);
+        String city = thePsychologist.getLocation().getCity();
+        model.addAttribute("patient", thePsychologist);
+        model.addAttribute("city", city);
+
+        return "psychologist/newPsychologist-form";
+    }
+    @GetMapping("/deletePsychologist")
+    public String deletePsychologist(@RequestParam("psychologistId") int theId, Model model) {
+
+        psychologistService.delete(theId);
+
+        return "redirect:/psychologists/list";
+
+    }
+    @PostMapping("/add")
+    public String addPsychologist(@RequestParam("name") String name,
+                                  @RequestParam("specialization") String specialization,
+                                  @RequestParam("phone") String phone,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("location") String city,
+                                  HttpSession session,
+                                  Model model) {
+
+        System.out.println("name: "+name+" specialization: "+specialization+" phone: "+phone+" email: "+email+" location: "+city);
+
+        // Retrieve user from session
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
+        System.out.println("\n\n\nrole: "+role);
+
+
+        if (role.equals("ADMIN")) {
+            // Set the location for the psychologist
+            Location location = locationService.findByCity(city);
+            locationService.save(location);
+
+            Psychologist newPsychologist = new Psychologist(name,specialization,phone,email,location);
+            // Save the new psychologist
+            psychologistService.addPsychologist(newPsychologist);
+            System.out.println("\n\nnewPsychologist has saved\n\n");
+
+
+            List<Psychologist> allPsychologists = psychologistService.findAllPsychologistsByNameAsc();
+
+            model.addAttribute("psychologists", allPsychologists);
+
+            model.addAttribute("role", user.getRole());
+            model.addAttribute("successMessage","Patient saved successfully!!");
+
+            return "psychologists/editPsychologist";
+        }
+
+        model.addAttribute("error", "User not logged in. Please log in to access this resource.");
+        return "loginForm";
+    }
+
+    @GetMapping("/addPsychologist")
+    public String addPatient(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        System.out.println("\n\n\ni am in addPsychologist\n\n");
+
+        if (user != null) {
+            String userRole = user.getRole();
+            if (userRole.equals("ADMIN")) {
+                Psychologist thePsycologist = new Psychologist();
+                model.addAttribute("psychologist", thePsycologist);
+                model.addAttribute("cities", allCities);
+                model.addAttribute("role", "userRole");
+                return "psychologists/newPsychologist-form";
+            }
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
@@ -127,31 +230,4 @@ public class PsychologistController {
 
     // *************************************** POST METHODS **************************************** //
 
-    @PostMapping("/add")
-    @ResponseBody
-    public Psychologist addPsychologist(@RequestParam("name") String newName,
-                                        @RequestParam("specialization") String newSpecialization,
-                                        @RequestParam("phone") String newPhone,
-                                        @RequestParam("email") String newEmail,
-                                        @RequestParam("city") String newCity) {
-        // Check if the location already exists
-        Location location = locationService.findByCity(newCity);
-
-
-        // If it doesn't exist, create and save a new Location
-        if (location == null) {
-            System.out.println("\n\n\n Location found: " + (location != null ? location.getCity() : "null"));
-            location = new Location(newCity);
-            location = locationService.save(location); // Persist the new Location to make it managed
-        }
-        locationService.save(location);
-
-        // Directly use the location in a managed state
-        // (no need for `merge` here if the location is already managed)
-        // Save the Psychologist and associate it with the managed Location
-        Psychologist newPsychologist = new Psychologist(newName, newSpecialization, newPhone, newEmail, location);
-
-        // Save the Psychologist
-        return psychologistService.addPsychologist(newPsychologist);
-    }
 }

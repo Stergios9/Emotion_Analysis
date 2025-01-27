@@ -6,6 +6,7 @@ import com.example.emotion_analysis.service.location.LocationServiceImpl;
 import com.example.emotion_analysis.service.patient.PatientService;
 import com.example.emotion_analysis.service.psychologists.PsychologistServiceImpl;
 import com.example.emotion_analysis.service.sentiment.SentimentService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +46,10 @@ public class SentimentAnalysisRestController {
                                 @RequestParam("gender") String gender,
                                 @RequestParam("location") String location,
                                 @RequestParam("comment") String comment,
-                                Model model){
+                                Model model, HttpSession session){
+
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
 
         // Find Location object by description
         Location locationOfPatient = locationService.findByCity(location);
@@ -98,6 +102,13 @@ public class SentimentAnalysisRestController {
         model.addAttribute("techniques", relaxationTechniques);
         model.addAttribute("professionals", allPsychologists);
         System.out.println("******** All attributes added ********");
+
+        if (role.equals("ADMIN")){
+            List<Patient> allPatients = patientService.findAllPatientsOrderByLastnameAsc();
+            model.addAttribute("successMessage","Patient saved successfully!!");
+            model.addAttribute("patients", allPatients);
+            return "patients/editPatient";
+        }
 
         return "new2";
     }

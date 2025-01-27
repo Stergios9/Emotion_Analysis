@@ -17,14 +17,12 @@
             <th:block th:if="${role == 'ADMIN'}">
                 <a href="/welcome">HOME</a>
                 <a href="#" class="highlighted-text" onclick="toggleSubMenu()">ADMINISTRATION</a>
-                <a href="/addPatient">ADD PATIENT</a>
-                <a href="/updatePatient">UPDATE PATIENT</a>
-                <a href="/deletePatient">DELETE PATIENT</a>
+                <a href="/patients/list">PATIENTS</a>
+                <a href="/psychologists/list">PSYCHOLOGISTS</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
         </div>
     </div>
-    <h1>ADMINISTRATION</h1>
 
     <!-- Right-side submenu -->
     <div class="submenu" id="submenu-content" style="display: none;">
@@ -47,8 +45,9 @@
     }
 </script>
 
+</body>
 <footer>
+    <br><br><br><br><br><br><br><br>
     &copy; 2024 Emotion Analysis System. All rights reserved.
 </footer>
-</body>
 </html>

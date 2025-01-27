@@ -1,8 +1,8 @@
 package com.example.emotion_analysis.service.psychologists;
 
+
 import com.example.emotion_analysis.dao.PsychologistRepository;
 import com.example.emotion_analysis.entity.Location;
-
 import com.example.emotion_analysis.entity.Psychologist;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,11 @@ public class PsychologistServiceImpl implements PsychologistService {
     public List<Psychologist> findAllPsychologists() {
         List<Psychologist> allPsychologists = psychologistRepository.findAll();
         return allPsychologists;
+    }
+
+    @Override
+    public List<Psychologist> findAllPsychologistsByNameAsc() {
+        return psychologistRepository.findAllByOrderByNameAsc();
     }
 
     @Override
@@ -55,9 +60,9 @@ public class PsychologistServiceImpl implements PsychologistService {
     @Override
     public Psychologist findById(int id) {
         Psychologist result = psychologistRepository.findPsychologistById(id);
-       if (result == null) {
-           return null;
-       }
+        if (result == null) {
+            return null;
+        }
         return result;
     }
     @Override

@@ -2,10 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Patient Details</title>
+    <title>Patients List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
-</head>
 </head>
 <body>
 
@@ -21,6 +20,7 @@
                 <a href="/contact">CONTACT</a>
                 <a href="index">MEDICAL DIAGNOSIS</a>
                 <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/patients">PATIENTS</a>
                 <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
@@ -49,43 +49,36 @@
 </script>
 <br>
 
-<div class="patient-details">
-    <h1>Patients</h1>
 
-    <!-- Patient details table -->
-    <table th:if="${patient != null}">
-        <tbody>
-        <tr>
-            <th>ID</th>
-            <td th:text="${patient.id}"></td>
-        </tr>
-        <tr>
-            <th>First Name</th>
-            <td th:text="${patient.firstName}"></td>
-        </tr>
-        <tr>
-            <th>Last Name</th>
-            <td th:text="${patient.lastName}"></td>
-        </tr>
-        <tr>
-            <th>Gender</th>
-            <td th:text="${patient.gender}"></td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td th:text="${patient.location.city}"></td>
-        </tr>
-        <tr>
-            <th>Comment</th>
-            <td th:text="${patient.comment}"></td>
-        </tr>
-        <tr>
-            <th>Registration Day</th>
-            <td th:text="${patient.getRegistrationDay()}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Location</th>
+        <th>Comment</th>
+        <th>Registration Day</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Show "No patients found" if the list is empty -->
+    <tr th:if="${#lists.isEmpty(patients)}">
+        <td colspan="7" class="no-patients">No patients found</td>
+    </tr>
+    <!-- Loop through each patient -->
+    <tr th:each="patient : ${patients}">
+        <td th:text="${patient.id}"></td>
+        <td th:text="${patient.firstName}"></td>
+        <td th:text="${patient.lastName}"></td>
+        <td th:text="${patient.gender}"></td>
+        <td th:text="${patient.location.city}"></td>
+        <td th:text="${patient.comment}"></td>
+        <td th:text="${patient.getRegistrationDay()}"></td>
+    </tr>
+    </tbody>
+</table>
 <footer>
     &copy; 2024 Emotion Analysis System. All rights reserved.
 </footer>

@@ -4,71 +4,18 @@
     <meta charset="UTF-8">
     <title>Contact Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+
     <style>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
-            text-align: center;
-            color: #333;
-        }
-        /* Header Container */
-        .header-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #1A494D;
-            color: white;
-            text-align: left;
-            padding: 10px 20px;
-        }
-
-        /* Title Styling */
-        .header-container h1 {
-            margin: 0;
-            font-size: 2.0em;
-            flex: 1;
-            text-align: center;
-        }
-
-        /* Hamburger Menu */
-        .hamburger-menu button {
-            background-color: transparent;
-            color: white;
-            font-size: 2em;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            background-color: #1A494D;
-            border-radius: 5px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            z-index: 10;
-            border: 2px solid #4a8b8d;  /* Optional border */
-        }
-
-        .menu a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px 0;
-            text-align: left;
-        }
-
-        .menu a:hover {
-            background-color: #4a8b8d;
-            color: #ffebcd;
-        }
+        /*        .body {*/
+        /*            font-family: Arial, sans-serif;*/
+        /*            margin: 0;*/
+        /*            padding: 0;*/
+        /*            background-color: #f0f8ff;*/
+        /*            text-align: center;*/
+        /*            color: #333;*/
+        /*        }*/
 
         h2 {
             text-align: center;
@@ -135,22 +82,6 @@
             height: 150px;
         }
 
-        button {
-            background-color: #5f9ea0;
-            color: red;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #1A494D;
-        }
-
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -180,7 +111,6 @@
             <a href="/logout">LOGOUT</a>
         </div>
     </div>
-    <h1>Contact Us</h1>
 </div>
 
 <!-- Contact Form Section -->

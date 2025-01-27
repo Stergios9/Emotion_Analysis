@@ -13,18 +13,17 @@
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-                <a href="/welcome">HOME</a>
-                <a href="about">ABOUT</a>
-                <a href="/contact" class="highlighted-text">CONTACT</a>
-                <a href="index" class="highlighted-text">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOINTMENT</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-                <a href="/logout">LOGOUT</a>
+            <a href="/welcome">HOME</a>
+            <a href="about">ABOUT</a>
+            <a href="/contact" class="highlighted-text">CONTACT</a>
+            <a href="index" class="highlighted-text">MEDICAL DIAGNOSIS</a>
+            <a href="/calendar">BOOK APPOINTMENT</a>
+            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+            <a href="/logout">LOGOUT</a>
         </div>
     </div>
 </div>
 <div class="container">
-    <h1>Analysis Result</h1>
     <p><strong>Name:</strong> <span th:text="${firstName}"></span></p>
     <p><strong>LastName:</strong> <span th:text="${lastName}"></span></p>
     <p><strong>Predicted sentiment:</strong> <span th:text="${emotion}"></span></p>
@@ -32,7 +31,7 @@
     <h2>Medical Diagnosis</h2>
     <p style="font-style: italic; font-size: 22px">
 
-    Dear <span th:text="${firstName}"></span>,
+        Dear <span th:text="${firstName}"></span>,
         <span th:text="${diagnosis}"></span>
     </p>
 

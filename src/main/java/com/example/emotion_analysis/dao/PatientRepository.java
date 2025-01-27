@@ -15,6 +15,8 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     List<Patient> findAll();
 
+    List<Patient> findAllByOrderByLastNameAsc();
+
     Patient save(Patient patient);
 
     void deleteById(Integer integer);
@@ -86,7 +88,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
 
 }
-
 
 
 

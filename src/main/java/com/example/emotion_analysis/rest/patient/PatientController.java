@@ -5,6 +5,7 @@ import com.example.emotion_analysis.entity.User;
 import com.example.emotion_analysis.service.patient.PatientService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,37 +22,92 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    @Value("${genders}")
+    private List<String> genders;
+
+    @Autowired
+    @Value("${cities}")
+    private List<String> allCities;
+
     // *************************************** GET METHODS **************************************** //
 
-    @GetMapping
+    @GetMapping("/list")
     public String getAllPatients(HttpSession session,Model model) {
+        System.out.println("\n\ni am in patientController\n\n");
+
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
         if (user != null) {
             String role = user.getRole();
             model.addAttribute("role", role);
-            List<Patient> allPatients = patientService.findAllPatients();
-            model.addAttribute("patients", allPatients); // Προσθήκη της λίστας στο μοντέλο
-            return "editPatient"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
-        }
-        model.addAttribute("error", "User not logged in. Please login to access this resource.");
-        return "loginForm";
-    }
+            List<Patient> allPatients = patientService.findAllPatientsOrderByLastnameAsc();
 
-    @GetMapping("/addPatient")
-    public String addPatient(HttpSession session,Model model) {
-        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+            model.addAttribute("patients", allPatients);
 
-        if (user != null) {
-
-            String role = user.getRole();
-            if (role.equals("admin")) {
-                model.addAttribute("role", "admin");
-                return "addPatient";
+            if (role.equals("ADMIN")) {
+                return "patients/editPatient"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+            }
+            else if (role.equals("USER")) {
+                return "patients/patients";
             }
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
+    @GetMapping("/addPatient")
+    public String addPatient(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+
+        if (user != null) {
+            String userRole = user.getRole();
+            if (userRole.equals("ADMIN")) {
+                Patient thePatient = new Patient();
+                model.addAttribute("patient", thePatient);
+                model.addAttribute("genders", genders);
+                model.addAttribute("cities", allCities);
+                model.addAttribute("role", "userRole");
+
+                return "patients/newPatient-form";
+            }
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
+    }
+
+    @GetMapping("/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("patientId") int theId,HttpSession session ,Model model) {
+        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
+        String userRole = user.getRole();
+
+        Patient thePatient = patientService.findById(theId);
+        String city = thePatient.getLocation().getCity();
+        System.out.println("\n\ni am in patientController: city == "+city+"\n\n");
+        model.addAttribute("patient", thePatient);
+        model.addAttribute("genders", genders);
+        model.addAttribute("cities", allCities);
+        model.addAttribute("role", "userRole");
+        model.addAttribute("city", city);
+
+        return "patients/newPatient-form";
+    }
+
+    @GetMapping("/deletePatient")
+    public String deletePatient(@RequestParam("patientId") int theId, Model model) {
+
+        patientService.delete(theId);
+
+        return "redirect:/patients/list";
+
+    }
+
+
+
+
+
+
+
+
+
 
     @GetMapping("/id/{patientId}")
     public String getPatientById(@PathVariable("patientId") int patientId, HttpSession session, Model model) {
@@ -184,31 +240,6 @@ public class PatientController {
 
     // *************************************** UPDATE METHODS **************************************** //
 
-    @PutMapping("/update-lastname/{id}")
-    public ResponseEntity<String> updatePatientLastName(
-            @PathVariable int id,
-            @RequestParam String lastname) {
-        try {
-            patientService.updatePatientLastName(id, lastname);
-            return ResponseEntity.ok("Last name updated successfully for patient with ID: " + id);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
-    }
-
-    @PutMapping("/update-firstname/{id}")
-    public ResponseEntity<String> updatePatientFirstName(
-            @PathVariable int id,
-            @RequestParam String firstname) {
-        try {
-            patientService.updatePatientFirstName(id, firstname);
-            return ResponseEntity.ok("First name updated successfully for patient with ID: " + id);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
-    }
-
-    // *********************************************************************************************** //
 
 
 }
