@@ -39,7 +39,7 @@ public class SentimentAnalysisRestController {
     private PsychologistServiceImpl psychologistService;
 
 
-    @PostMapping("/medicalDiagnosis")
+       @PostMapping("/medicalDiagnosis")
     public String submitPatient(@RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
                                 @RequestParam("age") int age,
