@@ -23,7 +23,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     Patient findById(int id);
 
-
     @Query("SELECT p FROM Patient p JOIN p.sentiments s WHERE s.description = :description")
     List<Patient> findBySentimentDescription(@Param("description") String description);
 
@@ -65,6 +64,7 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
             "JOIN p.sentiments s " +
             "GROUP BY p.gender, s.description " +
             "ORDER BY p.gender ASC, sentimentCount DESC")
+
     List<Object[]> findMostCommonSentimentByGender();
 
     // ****************************************************************************************** //
@@ -83,10 +83,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
             "ORDER BY p.gender, percentage DESC",
             nativeQuery = true)
     List<Object[]> findSentimentPercentageByGender();
-
-
-
-
 }
 
 

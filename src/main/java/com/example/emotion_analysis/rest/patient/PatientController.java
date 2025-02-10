@@ -1,18 +1,22 @@
 package com.example.emotion_analysis.rest.patient;
 
-import com.example.emotion_analysis.entity.Patient;
-import com.example.emotion_analysis.entity.User;
+import com.example.emotion_analysis.entity.*;
+import com.example.emotion_analysis.service.location.LocationService;
 import com.example.emotion_analysis.service.patient.PatientService;
+import com.example.emotion_analysis.service.sentiment.SentimentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -23,6 +27,12 @@ public class PatientController {
     private PatientService patientService;
 
     @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private SentimentService sentimentService;
+
+    @Autowired
     @Value("${genders}")
     private List<String> genders;
 
@@ -31,6 +41,7 @@ public class PatientController {
     private List<String> allCities;
 
     // *************************************** GET METHODS **************************************** //
+
 
     @GetMapping("/list")
     public String getAllPatients(HttpSession session,Model model) {
@@ -54,6 +65,7 @@ public class PatientController {
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
+
     @GetMapping("/addPatient")
     public String addPatient(HttpSession session,Model model) {
         User user = (User) session.getAttribute("user"); // Retrieve the user from the session
@@ -75,27 +87,78 @@ public class PatientController {
     }
 
     @GetMapping("/showFormForUpdate")
-    public String showFormForUpdate(@RequestParam("patientId") int theId,HttpSession session ,Model model) {
-        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
-        String userRole = user.getRole();
+    public String showFormForUpdate(@RequestParam("patientId") int theId, Model model, HttpSession session) {
 
-        Patient thePatient = patientService.findById(theId);
-        String city = thePatient.getLocation().getCity();
-        System.out.println("\n\ni am in patientController: city == "+city+"\n\n");
-        model.addAttribute("patient", thePatient);
-        model.addAttribute("genders", genders);
-        model.addAttribute("cities", allCities);
-        model.addAttribute("role", "userRole");
-        model.addAttribute("city", city);
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
+        if (role.equals("ADMIN")) {
+            Patient thePatient = patientService.findById(theId);
 
-        return "patients/newPatient-form";
+            thePatient.setLocation(null);
+            model.addAttribute("patient", thePatient);
+            model.addAttribute("genders", genders);
+            model.addAttribute("cities", allCities);
+            model.addAttribute("role", "role");
+
+            System.out.println("\n\nin showFormForUpdate\n\n");
+
+            return "patients/updatePatient-form";
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
 
+    // *************************************** UPDATE METHOD **************************************** //
+    @PostMapping("/updatePatient")
+    public String savePatient(@RequestParam("id") int id,
+                              @RequestParam("firstName") String firstName,
+                              @RequestParam("lastName") String lastName,
+                              @RequestParam("age") int age,
+                              @RequestParam("gender") String gender,
+                              @RequestParam("location") String location,
+                              @RequestParam("comment") String comment,
+                              RedirectAttributes redirectAttributes, HttpSession session){
+
+        Patient existingPatient = patientService.findById(id);
+
+        // Find Location object by description
+        Location locationOfPatient = locationService.findByCity(location);
+
+        existingPatient.setFirstName(firstName);
+        existingPatient.setLastName(lastName);
+        existingPatient.setAge(age);
+        existingPatient.setGender(gender);
+        existingPatient.setLocation(locationOfPatient);
+        existingPatient.setComment(comment);
+
+        String emotion = sentimentService.analyzeSentiment(comment);
+        Sentiment sentiment = sentimentService.findSentimentByDescription(emotion);
+
+        int sentimentId = sentiment.getId();
+
+        // Create and save patient with sentiment
+        Set<Sentiment> sentiments = new HashSet<>();
+        sentiments.add(sentiment);
+
+        existingPatient.setSentiments(sentiments);
+
+
+        patientService.save(existingPatient);
+        List<Patient> allPatients = patientService.findAllPatientsOrderByLastnameAsc();
+        redirectAttributes.addFlashAttribute("successMessage", "Patient updated successfully!!");
+
+        return "redirect:/patients/list"; // Redirect to the patient list or appropriate page
+    }
+
+    // *********************************************************************************************** //
+
+
+    // *************************************** DELETE METHOD **************************************** //
     @GetMapping("/deletePatient")
-    public String deletePatient(@RequestParam("patientId") int theId, Model model) {
+    public String deletePatient(@RequestParam("patientId") int theId,RedirectAttributes redirectAttributes) {
 
         patientService.delete(theId);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Patient deleted successfully!!");
         return "redirect:/patients/list";
 
     }
@@ -104,9 +167,7 @@ public class PatientController {
 
 
 
-
-
-
+// *************************************** DTO METHODS **************************************** //
 
 
     @GetMapping("/id/{patientId}")
@@ -235,11 +296,5 @@ public class PatientController {
         }
         return "Deleted " + patients.size() + " patient(s) with last name '" + lastname + "'.";
     }
-
-    // *********************************************************************************************** //
-
-    // *************************************** UPDATE METHODS **************************************** //
-
-
 
 }

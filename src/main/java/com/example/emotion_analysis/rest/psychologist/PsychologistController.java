@@ -1,13 +1,10 @@
 package com.example.emotion_analysis.rest.psychologist;
 
 import com.example.emotion_analysis.entity.Location;
-import com.example.emotion_analysis.entity.Patient;
 import com.example.emotion_analysis.entity.Psychologist;
 import com.example.emotion_analysis.entity.User;
 import com.example.emotion_analysis.service.location.LocationServiceImpl;
 import com.example.emotion_analysis.service.psychologists.PsychologistServiceImpl;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -34,6 +32,11 @@ public class PsychologistController {
     @Value("${cities}")
     private List<String> allCities;
 
+    @Autowired
+    @Value("${genders}")
+    private List<String> genders;
+
+
     // ************************************ DELETE METHODS ************************************ //
 
     @DeleteMapping("/delete/id/{psychologistId}")
@@ -41,7 +44,7 @@ public class PsychologistController {
     public String deletePsychologisttById(@PathVariable int psychologistId) {
         Psychologist thePsychologist = psychologistService.findById(psychologistId);
         if (thePsychologist == null) {
-            throw new RuntimeException("Patient with id '" + psychologistId+"' not found");
+            throw new RuntimeException("Psychologist with id '" + psychologistId+"' not found");
         }
         return psychologistService.delete(psychologistId);
     }
@@ -51,12 +54,12 @@ public class PsychologistController {
     public String deletePsychologistByLastName(@PathVariable String name) {
         List<Psychologist> psychologists = psychologistService.findPsychologistsByName(name);
         if (psychologists.isEmpty()) {
-            throw new RuntimeException("No patients found with last name '" + name + "'.");
+            throw new RuntimeException("No psychologists found with last name '" + name + "'.");
         }
         for (Psychologist psychologist : psychologists) {
             psychologistService.delete(psychologist.getId());
         }
-        return "Deleted " + psychologists.size() + " patient(s) with last name '" + name + "'.";
+        return "Deleted " + psychologists.size() + " Psychologist(s) with last name '" + name + "'.";
     }
 
     // *********************************************************************************************** //
@@ -101,19 +104,59 @@ public class PsychologistController {
     }
 
     @GetMapping("/psychologistForUpdate")
-    public String showFormForUpdate(@RequestParam("psychologistId") int theId, Model model) {
-        Psychologist thePsychologist = psychologistService.findById(theId);
-        String city = thePsychologist.getLocation().getCity();
-        model.addAttribute("patient", thePsychologist);
-        model.addAttribute("city", city);
+    public String showFormForUpdate(@RequestParam("psychologistId") int theId, Model model, HttpSession session) {
 
-        return "psychologist/newPsychologist-form";
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
+
+        if (role.equals("ADMIN")) {
+            Psychologist thePsychologist = psychologistService.findById(theId);
+            thePsychologist.setLocation(null);
+
+            model.addAttribute("psychologist", thePsychologist);
+            model.addAttribute("genders", genders);
+            model.addAttribute("cities", allCities);
+            model.addAttribute("role", "role");
+            return "psychologists/updatePsychologist-form";
+        }
+        model.addAttribute("error", "User not logged in. Please login to access this resource.");
+        return "loginForm";
     }
-    @GetMapping("/deletePsychologist")
-    public String deletePsychologist(@RequestParam("psychologistId") int theId, Model model) {
+
+
+    @PostMapping("/updatePsychologist")
+    public String savePatient(@RequestParam("id") int id,
+                              @RequestParam("name") String name,
+                              @RequestParam("specialization") String specialization,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("email") String email,
+                              @RequestParam("location") String location,
+                              RedirectAttributes redirectAttributes, HttpSession session){
+
+        Psychologist existingPsychologist = psychologistService.findById(id);
+
+        // Find Location object by description
+        Location locationOfPsychologist = locationService.findByCity(location);
+
+        existingPsychologist.setName(name);
+        existingPsychologist.setSpecialization(specialization);
+        existingPsychologist.setPhone(phone);
+        existingPsychologist.setEmail(email);
+        existingPsychologist.setLocation(locationOfPsychologist);
+
+        psychologistService.addPsychologist(existingPsychologist);
+        List<Psychologist> allPsychologists = psychologistService.findAllPsychologistsByNameAsc();
+
+        redirectAttributes.addFlashAttribute("successMessage", "Psychologist updated successfully!!");
+
+        return "redirect:/psychologists/list"; // Redirect to the patient list or appropriate page
+    }
+
+    @GetMapping("/psychologistForDelete")
+    public String deletePsychologist(@RequestParam("psychologistId") int theId,  RedirectAttributes redirectAttributes) {
 
         psychologistService.delete(theId);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Psychologist deleted successfully!!");
         return "redirect:/psychologists/list";
 
     }
@@ -150,7 +193,7 @@ public class PsychologistController {
             model.addAttribute("psychologists", allPsychologists);
 
             model.addAttribute("role", user.getRole());
-            model.addAttribute("successMessage","Patient saved successfully!!");
+            model.addAttribute("successMessage","Psychologist saved successfully!!");
 
             return "psychologists/editPsychologist";
         }
@@ -177,6 +220,13 @@ public class PsychologistController {
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
+
+
+
+
+
+
+// *************************************** DTO METHODS **************************************** //
 
     @GetMapping("/city/{city}")
     public String getPsychologistsByCity(HttpSession session,Model model, @PathVariable String city) {

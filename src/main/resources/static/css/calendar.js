@@ -40,6 +40,12 @@ function generateCalendar(year, month) {
 
     let row = document.createElement('tr');
 
+    // Get today's date
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+    const todayDate = today.getDate();
+
     // Fill in empty cells before the first day of the month
     for (let i = 0; i < firstDay; i++) {
         row.appendChild(document.createElement('td'));
@@ -51,8 +57,14 @@ function generateCalendar(year, month) {
         cell.textContent = day;
         cell.classList.add('calendar-day');
 
-        // Add click event to open modal for notes
-        cell.addEventListener('click', () => openNoteModal(year, month, day));
+        // Disable past dates
+        if (year < todayYear || (year === todayYear && month < todayMonth) || (year === todayYear && month === todayMonth && day < todayDate)) {
+            cell.style.color = "#ccc"; // Grey out past dates
+            cell.style.pointerEvents = "none"; // Disable clicking
+        } else {
+            // Add click event to open modal for valid dates
+            cell.addEventListener('click', () => openNoteModal(year, month, day));
+        }
 
         row.appendChild(cell);
 
@@ -107,15 +119,38 @@ function openNoteModal(year, month, day) {
     const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     noteDate.textContent = formattedDate;
 
+    // Get the current date and time
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const currentDate = now.getDate();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
 
-    time.value = notes[formattedDate] || ""; // Pre-fill with existing note if available
+    console.log(`Current Date & Time: ${now}`);
+    console.log(`Selected Date: ${formattedDate}`);
+
+    // Check if the selected date is today
+    if (year === currentYear && month === currentMonth && day === currentDate) {
+        // Calculate the min time to be current time
+        const minTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+
+        console.log(`Setting min time to: ${minTime}`);
+
+        // Ensure that the time input doesn't allow times before current time
+        time.setAttribute("min", minTime);  // Set the min time as current time
+    } else {
+        // If it's a future date, allow any time
+        time.removeAttribute("min");
+    }
+
+    // Pre-fill with existing note if available
+    time.value = notes[formattedDate] || "";
     patientName.value = ""; // Clear the name field
     patientEmail.value = ""; // Clear the email field
 
-
     modal.style.display = "block";
 }
-
 
 function saveNote() {
     const noteDate = document.getElementById("preferred-date").textContent;
@@ -162,4 +197,3 @@ function closeNoteModal() {
     const modal = document.getElementById("note-modal");
     modal.style.display = "none"; // Hide the modal
 }
-

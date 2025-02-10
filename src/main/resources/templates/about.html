@@ -15,15 +15,6 @@
             color: #212529;
         }
 
-        /*.header-container {*/
-        /*    background-color: #007bff;*/
-        /*    color: white;*/
-        /*    padding: 15px 20px;*/
-        /*    display: flex;*/
-        /*    align-items: center;*/
-        /*    justify-content: space-between;*/
-        /*}*/
-
         .hamburger-menu button {
             background: none;
             border: none;
@@ -35,7 +26,7 @@
         .menu {
             display: none;
             flex-direction: column;
-            background-color: #007bff;
+            background-color: #1A494D;
             position: absolute;
             top: 60px;
             left: 10px;
@@ -61,7 +52,7 @@
         }
 
         h1, h2 {
-            color: #007bff;
+            color: #1A494D;
             text-align: center;
         }
 
@@ -69,26 +60,18 @@
             line-height: 1.6;
             text-align: justify;
         }
-
-        .highlighted-text {
-            font-weight: bold;
-            color: #ffc107;
-        }
-
         a.btn-return {
             display: inline-block;
             margin-top: 20px;
-            background-color: #007bff;
+            background-color: #1A494D;
             color: white;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 5px;
         }
-
         a.btn-return:hover {
-            background-color: #0056b3;
+            background-color: #136B64;
         }
-
         footer {
             text-align: center;
             padding: 10px;
@@ -109,18 +92,7 @@
         <div class="menu" id="menu-content">
             <th:block th:if="${role == 'USER'}">
                 <a href="/welcome">HOME</a>
-                <a href="about" class="highlighted-text">ABOUT</a>
                 <a href="/contact">CONTACT</a>
-                <a href="index">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOINTMENT</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-                <a href="/logout">LOGOUT</a>
-            </th:block>
-
-            <th:block th:if="${role == 'ADMIN'}">
-                <a href="/welcome">HOME</a>
-                <a href="/calendar2">APPOINTMENTS</a>
-                <a href="/stats">STATISTICS</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
         </div>
@@ -130,16 +102,23 @@
 <!-- Main Content -->
 <div class="container">
     <h2>About Us</h2>
-    <p>Welcome to our Online Psychological Support platform. Our mission is to provide accessible, confidential, and reliable psychological support to individuals seeking help.</p>
+    <p>Welcome to our  platform. Our mission is to provide accessible, confidential, and reliable mental health support to individuals seeking guidance.</p>
 
-    <h2>Our Mission</h2>
-    <p>We aim to create a safe space where you can share your feelings, connect with professional support, and find resources to improve your mental well-being.</p>
+    <h2>Our Core Feature</h2>
+    <p>
+        Our system offers an **AI-powered mental health diagnosis** based on the descriptions provided by users.
+        Simply describe your thoughts and emotions, and our system will analyze your input to provide insights into your mental well-being.
+    </p>
+
+    <h2>Doctor Appointments</h2>
+    <p>We now offer the ability to book an appointment with a licensed doctor for personalized support. If you need further assistance beyond our AI-based analysis, you can easily schedule a consultation.</p>
 
     <h2>What We Offer</h2>
     <ul>
-        <li>Personalized emotional support</li>
-        <li>Access to licensed professionals</li>
-        <li>Self-help resources and guides</li>
+        <li><b>AI-powered mental diagnosis</b> based on user input</li>
+        <li><b>Book an appointment</b> with a licensed mental health professional</li>
+        <li><b>Confidential & Secure</b> support to ensure your privacy</li>
+        <li>Self-help resources and mental health guides</li>
     </ul>
 
     <a href="/welcome" class="btn-return">Return to Home</a>
@@ -156,5 +135,6 @@
         menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
     }
 </script>
+
 </body>
 </html>

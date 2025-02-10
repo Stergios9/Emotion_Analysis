@@ -5,33 +5,27 @@
     <title>Contact Us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <style>
-
-        /*        .body {*/
-        /*            font-family: Arial, sans-serif;*/
-        /*            margin: 0;*/
-        /*            padding: 0;*/
-        /*            background-color: #f0f8ff;*/
-        /*            text-align: center;*/
-        /*            color: #333;*/
-        /*        }*/
 
         h2 {
             text-align: center;
             color: #444;
             margin-bottom: 30px;
         }
-        .highlighted-text {
-            font-weight: bold; /* Make the text bold */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow */
-            background: brown; /* Add brown background */
-            color: white; /* Optional: Make text stand out on brown background */
-            pointer-events: none; /* Disable clicking */
-            cursor: default; /* Indicate it's not clickable */
-            text-decoration: none; /* Remove underline */
+        .btn-return {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #1A494D;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
-
+        .btn-return:hover {
+            background-color: #136B64;
+        }
         footer {
             margin-top: 20px;
             text-align: center;
@@ -39,26 +33,21 @@
             padding: 50px;
             color: #777;
         }
-
-
         p {
             font-size: 1.2em;
             line-height: 1.6;
         }
-
         form {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .form-group {
             margin-bottom: 15px;
             width: 100%;
             max-width: 500px;
         }
-
         .form-group label {
             font-size: 1.2em;
             font-weight: 600;
@@ -66,7 +55,6 @@
             display: block;
             margin-bottom: 5px;
         }
-
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group textarea {
@@ -77,11 +65,9 @@
             padding: 10px;
             font-size: 1em;
         }
-
         textarea {
             height: 150px;
         }
-
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -104,38 +90,64 @@
         <div class="menu" id="menu-content">
             <a href="/welcome">HOME</a>
             <a href="/about">ABOUT</a>
-            <a href="/contact" class="highlighted-text">CONTACT</a>
-            <a href="index">MEDICAL DIAGNOSIS</a>
-            <a href="/calendar">BOOK APPOINTMENT</a>
-            <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
             <a href="/logout">LOGOUT</a>
         </div>
     </div>
 </div>
 
+
 <!-- Contact Form Section -->
 <div class="container">
-    <h2>We'd Love to Hear from You!</h2>
-    <p>If you have any questions, feedback, or need assistance, feel free to reach out to us using the form below.</p>
 
-    <form action="/submitContactForm" method="post">
-        <div class="form-group">
-            <label for="name">Your Name:</label>
-            <input type="text" id="name" name="name" required>
+    <!-- Success Message -->
+    <div id="success-message" th:if="${successMessage}" class="alert alert-success w-50 mx-auto">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener("DOMContentLoaded", function() {
+            const successMessage = document.getElementById("success-message");
+            if (successMessage) {
+                // Set a timer to hide the message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        });
+    </script>
+
+    <h2 class="text-center">Contact Us</h2>
+
+    <form th:action="@{/contact/submit}" th:object="${contact}" method="POST">
+
+        <input type="hidden" th:field="*{id}" />
+
+    <div class="form-group">
+            <label class="form-label">Name:</label>
+            <input type="text" class="form-control"  th:field="*{firstName}" required>
         </div>
 
         <div class="form-group">
-            <label for="email">Your Email:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="lastname">Last name:</label>
+            <input type="text" id="lastname"  th:field="*{lastName}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email"  th:field="*{email}" required>
         </div>
 
         <div class="form-group">
             <label for="message">Your Message:</label>
-            <textarea id="message" name="message" placeholder="Enter your message here" required></textarea>
+            <textarea id="message" name="message" th:field="*{message}" rows="4" placeholder="Enter your message here" required></textarea>
         </div>
 
-        <button type="submit">Send Message</button>
+        <button type="submit" class="btn-return">Send Message</button>
     </form>
+
+    <hr>
+    <a th:href="@{/welcome}" style="font-size: 20px; color: #136B64;">Back Home</a>
 
 </div>
 

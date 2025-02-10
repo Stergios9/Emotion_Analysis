@@ -1,6 +1,5 @@
 package com.example.emotion_analysis.service.patient;
 
-
 import com.example.emotion_analysis.dao.PatientRepository;
 import com.example.emotion_analysis.entity.Patient;
 import jakarta.transaction.Transactional;
@@ -14,6 +13,7 @@ import java.util.List;
 @Service
 public class PatientServiceImpl implements PatientService {
 
+    @Autowired
     private PatientRepository patientRepository;
 
     @Autowired
@@ -92,8 +92,6 @@ public class PatientServiceImpl implements PatientService {
     public List<Object[]> findMostFrequentSentiment() {
         return patientRepository.findTopFiveMostFrequentSentiments();
     }
-
-
 
     @Override
     public List<Object[]> getMostCommonSentimentByGender() {

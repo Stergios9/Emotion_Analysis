@@ -88,76 +88,54 @@
 
 <div class="container">
     <br>
-
     <p class="h1 mb-4" style="text-align: center">New Patient</p>
 
-    <form action="#" th:action="@{/medicalDiagnosis}"
-          th:object="${patient}" method="POST">
+    <form action="#" th:action="@{/medicalDiagnosis}" th:object="${patient}" method="POST">
 
-        <!-- Add hidden form field to handle update -->
-        <input type="hidden" th:field="*{id}" />
+        <input type="text" th:field="${patient.firstName}"
+               class="form-control mb-4 w-25" placeholder="First name">
 
-        <input type="text"
-               th:field="*{firstName}"
-               class="form-control mb-4 w-25"
-               placeholder="First name"
-               pattern="[A-Za-z]+"
-               title="Only letters allowed"
-               required>
-
-        <input type="text"
-               th:field="*{lastName}"
-               class="form-control mb-4 w-25"
-               placeholder="Last name"
-               pattern="[A-Za-z]+"
-               title="Only letters allowed"
-               required>
+        <input type="text" th:field="${patient.lastName}"
+               class="form-control mb-4 w-25" placeholder="Last name">
 
         <div class="mb-4">
             <label for="age" class="form-label fw-bold">Age</label>
             <input type="number"
-                   th:field="*{age}"
+                   th:field="${patient.age}"
                    id="age"
                    class="form-control w-25"
-                   placeholder="Age"
-                   required
-                   min="1">
+                   placeholder="Age">
+        </div>
+
+        <div class="mb-4">
+            <label for="gender" class="form-label fw-bold">Gender</label>
+            <select th:field="${patient.gender}" id="gender" class="form-select w-25" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender}"></option>
+
+            </select>
         </div>
 
         <div class="mb-4">
             <label for="location" class="form-label fw-bold">Location</label>
-            <select id="location" th:field="*{location}" class="form-select w-25" required>
+            <select id="location" th:field="${patient.location}" class="form-select w-25" required>
                 <option value="" disabled selected>Select Location</option>
                 <option th:each="tempCity : ${cities}" th:value="${tempCity}" th:text="${tempCity}"></option>
             </select>
         </div>
 
         <div class="mb-4">
-            <label for="gender" class="form-label fw-bold">Gender</label>
-            <select th:field="*{gender}" id="gender" class="form-select w-25" required>
-                <option value="" disabled selected>Select Gender</option>
-                <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender}"></option>
-            </select>
-        </div>
-
-        <div class="mb-4">
             <label for="comment" class="form-label fw-bold">Patient's emotional description</label>
-            <input type="text"
-                   id="comment"
-                   th:field="*{comment}"
-                   class="form-control mb-4 w-25"
-                   placeholder="Comment"
-                   pattern="(\w+\s*)+"
-                   title="Please enter at least 1 word"
-                   required>
-        </div>
+            <input type="text" id="comment" name="comment" th:field="${patient.comment}"
+                   class="form-control mb-4 w-25" placeholder="Comment">
 
+        </div>
 
         <button type="submit" class="btn btn-info col-2">Save</button>
 
     </form>
     <hr>
-    <a th:href="@{/patients/list}">Back to Patient List</a>
+    <a th:href="@{/static}">Back to Login Form</a>
 </div>
 
 </body>

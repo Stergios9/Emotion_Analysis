@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+</head>
+<body>
+
+<!-- Header Container with Title -->
+<div class="header-container">
+    <div class="hamburger-menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu-content">
+
+            <th:block th:if="${role == 'USER'}">
+                <a href="/welcome">HOME</a>
+                <a href="about">ABOUT</a>
+                <a href="/contact">CONTACT</a>
+                <a href="index">MEDICAL DIAGNOSIS</a>
+                <a href="/calendar">BOOK APPOINTMENT</a>
+                <a href="/patients">PATIENTS</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
+            <th:block th:if="${role == 'ADMIN'}">
+                <a href="/welcome">HOME</a>
+                <a href="/stats"  class="highlighted-text">STATISTICS</a>
+                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
+                <a href="/patients">PATIENTS</a>
+                <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
+                <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
+                <a href="/logout">LOGOUT</a>
+            </th:block>
+
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menu-content");
+        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+    }
+</script>
+<br>
+
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Role</th>
+        <th>Username</th>
+        <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Show "No patients found" if the list is empty -->
+    <tr th:if="${#lists.isEmpty(allUsers)}">
+        <td colspan="7" class="no-patients">No users found</td>
+    </tr>
+    <!-- Loop through each patient -->
+    <tr th:each="tempUser : ${allUsers}">
+        <td th:text="${tempUser.id}"></td>
+        <td th:text="${tempUser.role}"></td>
+        <td th:text="${tempUser.username}"></td>
+        <td th:text="${tempUser.password}"></td>
+    </tr>
+    </tbody>
+</table>
+<footer>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
+</body>
+</html>

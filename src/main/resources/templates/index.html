@@ -15,7 +15,6 @@
             background-position: center;
             margin-bottom: 30px; /* Add space below the background image */
         }
-
         form {
             max-width: 1000px;
             margin: 0 auto; /* Center the form horizontally */
@@ -24,19 +23,29 @@
             border-radius: 10px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
-
         .form-row {
             display: grid;
             grid-template-columns: 150px auto; /* Fixed width for labels, flexible for inputs */
             align-items: center; /* Align labels and inputs vertically */
             margin-bottom: 10px;
         }
-
         .form-row label {
             text-align: left; /* Ensure labels are left-aligned */
             font-size: 1em;
             font-weight: bold;
             color: #333;
+        }
+        .btn-return {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #1A494D;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-return:hover {
+            background-color: #136B64;
         }
 
         .form-row input[type="text"],
@@ -64,18 +73,11 @@
         <div class="menu" id="menu-content">
             <th:block th:if="${role == 'USER'}">
                 <a href="/welcome">HOME</a>
-                <a href="about">ABOUT</a>
-                <a href="/contact">CONTACT</a>
-                <a href="index" class="highlighted-text">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOINTMENT</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
 
             <th:block th:if="${role == 'ADMIN'}">
                 <a href="/welcome">HOME</a>
-                <a href="/calendar2">APPOINTMENTS</a>
-                <a href="/stats">STATISTICS</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
         </div>
@@ -87,6 +89,10 @@
 
 
 <form th:action="@{/medicalDiagnosis}" th:object="${patient}" method="POST">
+
+    <!-- Add hidden form field to handle update -->
+    <input type="hidden" th:field="*{id}" />
+
     <div class="form-row">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" th:field="*{firstName}">
@@ -114,21 +120,18 @@
 
     <div class="form-row">
         <label for="location">Location:</label>
-        <select id="location" th:field="*{location}" required>
+        <select id="location" th:field="*{location}">
             <option th:each="tempCity : ${cities}" th:value="${tempCity}" th:text="${tempCity}"></option>
         </select>
     </div>
 
     <div class="form-row">
-        <label for="comment">How you feel ?</label>
-        <textarea id="comment" name="comment" placeholder="Describe the emotions that most affect your daily life" required></textarea>
+        <label for="comment">How you feel?</label>
+        <textarea id="comment" th:field="*{comment}" placeholder="Describe the emotions that most affect your daily life"></textarea>
     </div>
 
-
-    <button type="submit">Submit</button>
+    <button type="submit" class="btn-return">Submit</button>
 </form>
-
-
 
 <script>
     function toggleMenu() {

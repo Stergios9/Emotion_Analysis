@@ -1,8 +1,9 @@
 package com.example.emotion_analysis.service.psychologists;
 
-
 import com.example.emotion_analysis.dao.PsychologistRepository;
 import com.example.emotion_analysis.entity.Location;
+
+import com.example.emotion_analysis.entity.Patient;
 import com.example.emotion_analysis.entity.Psychologist;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,4 +79,5 @@ public class PsychologistServiceImpl implements PsychologistService {
     public List<Psychologist> findPsychologistsByLocation(String city) {
         return psychologistRepository.findPsychologistsByCity(city);
     }
+
 }

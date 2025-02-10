@@ -1,6 +1,5 @@
 package com.example.emotion_analysis.service.psychologists;
 
-
 import com.example.emotion_analysis.entity.Location;
 import com.example.emotion_analysis.entity.Psychologist;
 
@@ -26,5 +25,7 @@ public interface PsychologistService {
     void updatePsychologistEmail(int id, String email);
 
     List<Psychologist> findPsychologistsByLocation(String city);
+
+
 
 }

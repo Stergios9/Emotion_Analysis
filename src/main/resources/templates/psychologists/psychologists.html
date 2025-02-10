@@ -44,7 +44,6 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>First Name</th>
         <th>Specialization</th>
         <th>Phone</th>
@@ -59,7 +58,6 @@
     </tr>
     <!-- Επανάληψη για κάθε ψυχολόγο -->
     <tr th:each="psychologist : ${psychologists}">
-        <td th:text="${psychologist.id}"></td>
         <td th:text="${psychologist.name}"></td>
         <td th:text="${psychologist.specialization}"></td>
         <td th:text="${psychologist.phone}"></td>

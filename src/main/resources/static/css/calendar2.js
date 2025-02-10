@@ -18,12 +18,18 @@ function generateCalendar(year, month) {
     calendarDays.innerHTML = ''; // Clear previous calendar content
 
     const monthYear = document.getElementById('month-year');
-    monthYear.textContent = `${monthNames[month]} ${year}`;
+    monthYear.textContent = `${monthNames[month]} ${year}`; // Display month and year
 
     const firstDay = new Date(year, month, 1).getDay(); // Day of the week the month starts on
     const daysInMonth = new Date(year, month + 1, 0).getDate(); // Total days in the month
 
     let row = document.createElement('tr');
+
+    // Get today's date
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+    const todayDate = today.getDate();
 
     // Fill in empty cells before the first day of the month
     for (let i = 0; i < firstDay; i++) {
@@ -36,12 +42,17 @@ function generateCalendar(year, month) {
         cell.textContent = day;
         cell.classList.add('calendar-day');
 
-        // Add click event to open modal and fetch data for that date
-        cell.addEventListener('click', () => openNoteModal(year, month, day));
+        // Disable past dates
+        if (year < todayYear || (year === todayYear && month < todayMonth) || (year === todayYear && month === todayMonth && day < todayDate)) {
+            cell.style.color = "#ccc"; // Grey out past dates
+            cell.style.pointerEvents = "none"; // Disable clicking
+        } else {
+            // Add click event to open modal for valid dates
+            cell.addEventListener('click', () => openNoteModal(year, month, day));
+        }
 
         row.appendChild(cell);
 
-        // Start a new row after every Saturday or on the last day
         if ((firstDay + day) % 7 === 0 || day === daysInMonth) {
             calendarDays.appendChild(row);
             row = document.createElement('tr');
@@ -210,5 +221,4 @@ function closeNoteModal() {
     const modal = document.getElementById("note-modal");
     modal.style.display = "none"; // Hide the modal
 }
-
 

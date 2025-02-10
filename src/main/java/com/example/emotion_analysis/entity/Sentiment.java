@@ -52,4 +52,3 @@ public class Sentiment {
         this.patients = patients;
     }
 }
-
