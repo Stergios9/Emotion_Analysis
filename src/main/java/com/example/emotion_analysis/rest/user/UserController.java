@@ -42,55 +42,61 @@ public class UserController {
     @GetMapping("/addUser")
     public String addUser(HttpSession session,Model model) {
 
-        User user = (User) session.getAttribute("user"); // Retrieve the user from the session
-        System.out.println("\n\n\ni am in AddUser\n\n");
+        User existedUser = (User) session.getAttribute("user"); // Retrieve the user from the session
 
+        if (existedUser.getRole().equals("ADMIN")) {
+            model.addAttribute("user", new User());
+            model.addAttribute("role","USER");
 
-        if (user != null) {
-            String userRole = user.getRole();
-            if (userRole.equals("ADMIN")) {
-                User newUser = new User();
-                model.addAttribute("newUser", newUser);
-//                model.addAttribute("role", userRole);
-//                model.addAttribute("role", "USER");
-
-                return "users/newUser-form";
-            }
+            return "users/newUser-form";
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";
     }
 
-    @PostMapping("/add")
-    public String addUser(@RequestParam("username") String username,
-                          @RequestParam("password") String password,
-                          Model model, HttpSession session) {
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute("user") User newUser,
+                          RedirectAttributes redirectAttributes, HttpSession session) {
 
-        // Retrieve user from session
-        User user = (User) session.getAttribute("user");
-        String role = user.getRole();
-        System.out.println("\n\n\nrole: "+role);
-
-        if (role.equals("ADMIN")) {
-            // Set the location for the psychologist
-
-            User newUser = new User(role,username,password);
-            // Save the new psychologist
+        if (newUser!=null){
+            // Save the user to the database
             userService.saveUser(newUser);
-            System.out.println("\n\nnew User saved\n\n");
 
+            // Store the user in session
+            session.setAttribute("user", newUser);
 
-            List<User> listOfUsers = userRepository.findAll();
-            model.addAttribute("allUsers", listOfUsers);
-
-            model.addAttribute("role", role);
-            model.addAttribute("successMessage","User saved successfully!!");
-
-            return "users/editUsers";
+            redirectAttributes.addFlashAttribute("user",newUser);
+            redirectAttributes.addFlashAttribute("successMessage", "New User created successfully!!!");
+            return "redirect:/";
         }
 
-        model.addAttribute("error", "User not logged in. Please log in to access this resource.");
-        return "loginForm";
+        redirectAttributes.addFlashAttribute("error","User not logged in. Please login to access this resource.");
+        return "redirect:/";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("user") User newUser,
+                          RedirectAttributes redirectAttributes, HttpSession session) {
+
+        User existedUser = (User) session.getAttribute("user");
+        System.out.println("\n\nin add\n\n");
+
+        if (existedUser.getRole().equals("ADMIN")){
+
+            System.out.println("\n\nnewUser!=null and role: "+newUser.getRole()+"\n\n");
+            // Save the user to the database
+            userService.saveUser(newUser);
+
+            List<User> listOfUsers = userRepository.findAll();
+            redirectAttributes.addFlashAttribute("allUsers", listOfUsers);
+            redirectAttributes.addFlashAttribute("role", newUser.getRole());
+            redirectAttributes.addFlashAttribute("successMessage", "User saved successfully!!");
+
+            return "redirect:/users/list";
+        }
+
+        redirectAttributes.addFlashAttribute("error","User not logged in. Please login to access this resource.");
+        return "redirect:/";
     }
 
 

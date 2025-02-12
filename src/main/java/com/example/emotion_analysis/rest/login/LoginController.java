@@ -41,32 +41,19 @@ public class LoginController {
         return "loginForm";
     }
 
-//    @GetMapping("/registrate")
-//    public String registrateNewUser(HttpSession session, Model model) {
-//        User user = (User) session.getAttribute("user");
-//        model.addAttribute("role", "USER");
-//
-//        Patient thePatient = new Patient();
-//
-//        model.addAttribute("patient", thePatient);
-//        model.addAttribute("cities", cities);
-//        model.addAttribute("ages", ages);
-//        model.addAttribute("genders", genders);
-//
-//        System.out.println("\n\nin registrate\n\n");
-//        return "patients/registration-form";
-//    }
-
 
     @GetMapping("/signUp")
     public String signUp(HttpSession session, Model model) {
+        User user = new User();
+        user.setRole("USER");  // Set default role
 
-        User newUser = new User();
-        model.addAttribute("user", newUser);
+        model.addAttribute("user", user);
         model.addAttribute("role", "USER");
         System.out.println("\n\nin signUp method\n\n");
-        return "patients/newUser";
+
+        return "users/registration-form";
     }
+
 
     @PostMapping("/saveNewUser")
     public String saveNewUser(@ModelAttribute("user") User theUser,
@@ -121,7 +108,7 @@ public class LoginController {
     public String logout(HttpSession session, Model model) {
         session.invalidate(); // Invalidate the session to log the user ou
         model.addAttribute("user", new User());
-        return "loginForm"; // Redirect to the login page
+        return "redirect:/";
     }
 
     @GetMapping("/welcome")

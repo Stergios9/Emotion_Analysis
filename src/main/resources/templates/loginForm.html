@@ -20,6 +20,24 @@
 </div>
 <br><br>
 
+<!-- Success Message -->
+<div id="success-message" th:if="${successMessage}" class="alert alert-success w-50 mx-auto">
+    <span th:text="${successMessage}"></span>
+</div>
+
+<script>
+    // Wait for the DOM to load
+    document.addEventListener("DOMContentLoaded", function() {
+        const successMessage = document.getElementById("success-message");
+        if (successMessage) {
+            // Set a timer to hide the message after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    });
+</script>
+
 
 <h1>Login</h1>
 <br>
