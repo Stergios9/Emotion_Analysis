@@ -1,6 +1,7 @@
 package com.example.emotion_analysis.dao;
 
 import com.example.emotion_analysis.entity.Patient;
+import com.example.emotion_analysis.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,19 +10,27 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     List<Patient> findAll();
 
-    List<Patient> findAllByOrderByLastNameAsc();
-
     Patient save(Patient patient);
 
     void deleteById(Integer integer);
 
     Patient findById(int id);
+
+    Optional<Patient> findByLastNameAndFirstName(String lastName, String firstName);
+
+    List<Patient> findAllByOrderByLastNameAsc();
+
+    List<Patient> findByUser(User user);
+
+
+
 
     @Query("SELECT p FROM Patient p JOIN p.sentiments s WHERE s.description = :description")
     List<Patient> findBySentimentDescription(@Param("description") String description);

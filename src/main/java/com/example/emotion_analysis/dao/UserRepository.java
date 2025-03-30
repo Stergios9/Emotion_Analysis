@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.emotion_analysis.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository  extends JpaRepository<User, Integer> {
 
@@ -17,4 +18,6 @@ public interface UserRepository  extends JpaRepository<User, Integer> {
     List<User> findAll();
 
     void deleteById(Integer integer);
+
+    Optional<User> findById(Integer integer);
 }

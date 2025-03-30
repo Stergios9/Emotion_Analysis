@@ -25,18 +25,19 @@ public class Patient {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
+
 
     @Column(name = "registration_day")
     private LocalDateTime registration_day;
 
     // Change to ManyToOne relationship
-    @ManyToOne(cascade = CascadeType.MERGE)  // Adjust cascade type as needed
-    @JoinColumn(name = "location_id")  // This column in Patient table references Location
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToMany(cascade = CascadeType.MERGE) // Use ManyToMany here
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "patient_sentiment", // Join table name
             joinColumns = @JoinColumn(name = "patient_id"), // Foreign key for Patient
@@ -51,7 +52,7 @@ public class Patient {
 
     public Patient() {}
 
-    public Patient(String firstName, String lastName, int age, String gender, Location location, String comment, LocalDateTime registration_day, Set<Sentiment> sentiments) {
+    public Patient(String firstName, String lastName, int age, String gender, Location location, String comment, LocalDateTime registration_day, Set<Sentiment> sentiments,User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -61,7 +62,8 @@ public class Patient {
         this.registration_day = registration_day;
         this.sentiments = sentiments;
         this.user = new User();
-        this.user.setId(1);
+//        this.user.setId(1);
+        this.user=user;
     }
 
     // Getters and Setters

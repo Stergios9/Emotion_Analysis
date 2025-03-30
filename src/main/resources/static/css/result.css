@@ -123,6 +123,15 @@ footer {
     border-radius: 50%; /* Full circle */
     box-sizing: border-box;       /* Include padding and border in dimensions */
 }
+.btn-return {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #1A494D;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
 
 .record-container {
     display: flex;

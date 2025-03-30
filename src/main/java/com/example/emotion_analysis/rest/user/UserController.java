@@ -1,8 +1,10 @@
 package com.example.emotion_analysis.rest.user;
 
 
+import com.example.emotion_analysis.dao.PatientRepository;
 import com.example.emotion_analysis.dao.UserRepository;
 import com.example.emotion_analysis.entity.*;
+import com.example.emotion_analysis.service.patient.PatientService;
 import com.example.emotion_analysis.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -24,15 +25,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PatientService patientService;
+
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User newUser, Model model, HttpSession session) {
 
         newUser.setRole("USER");
         userService.saveUser(newUser);
-
-        System.out.println("\n\nUser saved successfully\n\n");
-        System.out.println("\nrole: " + newUser.getRole());
-
         session.setAttribute("user", newUser);
         model.addAttribute("user", newUser);
 
@@ -56,7 +56,13 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User newUser,
-                          RedirectAttributes redirectAttributes, HttpSession session) {
+                               RedirectAttributes redirectAttributes, HttpSession session) {
+
+        User existUser = userService.findByUsername(newUser.getUsername());
+        if (existUser != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User already exists!!!");
+            return "redirect:/";
+        }
 
         if (newUser!=null){
             // Save the user to the database
@@ -79,6 +85,7 @@ public class UserController {
                           RedirectAttributes redirectAttributes, HttpSession session) {
 
         User existedUser = (User) session.getAttribute("user");
+        session.setAttribute("user", newUser);
         System.out.println("\n\nin add\n\n");
 
         if (existedUser.getRole().equals("ADMIN")){
@@ -165,15 +172,28 @@ public class UserController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam("userId") int theId,  RedirectAttributes redirectAttributes) {
+    public String deleteUser(@RequestParam("userId") int theId, RedirectAttributes redirectAttributes) {
 
-        userService.deleteUserById(theId);
-        redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully!!");
+        // First, find the User entity
+        Optional<User> userOptional = userService.findById(theId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Delete all patients associated with this user
+            List<Patient> patients = patientService.findByUser(user);
+            for (Patient patient : patients) {
+                patientService.delete(patient.getId());
+            }
+
+            // Now delete the user
+            userService.deleteUserById(theId);
+            redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully!!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found!");
+        }
+
         return "redirect:/users/list";
-
     }
 
-
-
 }
-

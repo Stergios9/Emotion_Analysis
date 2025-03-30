@@ -1,38 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Administration Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-    <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/calendar.css}" />-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+
 </head>
 <body>
 
-
-<!-- Header Container with Title -->
+<!-- Header Container with Hamburger Menu -->
 <div class="header-container">
     <div class="hamburger-menu">
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
-            <th:block th:if="${role == 'USER'}">
-                <a href="/welcome">HOME</a>
-                <a href="about">ABOUT</a>
-                <a href="/contact">CONTACT</a>
-                <a href="index">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOINTMENT</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-                <a href="/logout">LOGOUT</a>
-            </th:block>
-
             <th:block th:if="${role == 'ADMIN'}">
                 <a href="/welcome">HOME</a>
-                <a href="/calendar2">APPOINTMENTS</a>
-                <a href="/stats">STATISTICS</a>
+                <a href="#" class="highlighted-text" onclick="toggleSubMenu()">ADMINISTRATION</a>
+                <a href="/patients/list">PATIENTS</a>
+                <a href="/psychologists/list">PSYCHOLOGISTS</a>
+                <a href="/users/list">USERS</a>
                 <a href="/logout">LOGOUT</a>
             </th:block>
         </div>
     </div>
+
+    <!-- Right-side submenu -->
+    <div class="submenu" id="submenu-content" style="display: none;">
+        <a href="/deletePatient">DELETE PATIENT</a>
+    </div>
+</div>
+<!-- Display error message if login fails -->
+<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+<!-- Image Container -->
+<div class="image-container">
+    <img src="images/admin2.jpg" alt="Psychological Insights" style="width: 750px; height: auto;" />
 </div>
 
 <!-- JavaScript for Menu Toggle -->
@@ -42,50 +45,10 @@
         menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
     }
 </script>
-<br>
-<div class="calendar-header">
-    <button id="prev-month" onclick="changeMonth(-1)"> &#8592;</button>
-    <h2 id="month-year"></h2>
-    <button id="next-month" onclick="changeMonth(1)"> &#8594;</button>
-    <!--    <button onclick="clearAllNotes()">Clear All Notes</button>-->
-
-</div>
-<br>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th>Sun</th>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thu</th>
-        <th>Fri</th>
-        <th>Sat</th>
-    </tr>
-    </thead>
-    <tbody id="calendar-days">
-    <!-- Rows of days will be dynamically added here -->
-    </tbody>
-</table>
-</div>
-
-<div class="modal-content" style="display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;">
-    <span id="close-modal" class="close" style="align-self: flex-end; cursor: pointer;">&times;</span>
-    <h3 style="text-align: left; margin-left: 0; padding-left: 10px; width: 60%; max-width: 400px; font-size: 20px; box-sizing: border-box;">
-        Date: <span id="note-date"></span>
-    </h3>    <textarea id="note-input" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="time:"></textarea>
-    <textarea id="name" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="name:"></textarea>
-    <textarea id="email" rows="4" style="width: 60%; height: 20px; max-width: 400px; padding: 10px; font-size: 16px; resize: none; white-space: pre-line;" placeholder="email:"></textarea>
-    <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;" >Add Note</button>
-</div>
-
-
-<!-- Link to your script -->
-<script src="/css/calendar.js"></script>
-<footer>
-    &copy; 2024 Emotion Analysis System. All rights reserved.
-</footer>
 
 </body>
+<footer>
+    <br><br><br><br><br><br><br><br>
+    &copy; 2024 Emotion Analysis System. All rights reserved.
+</footer>
 </html>

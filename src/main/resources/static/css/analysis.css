@@ -116,6 +116,15 @@ li {
     margin-bottom: 10px;
     transition: background-color 0.3s;
 }
+.highlighted-text {
+    font-weight: bold; /* Make the text bold */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow */
+    background: brown; /* Add brown background */
+    color: white; /* Optional: Make text stand out on brown background */
+    pointer-events: none; /* Disable clicking */
+    cursor: default; /* Indicate it's not clickable */
+    text-decoration: none; /* Remove underline */
+}
 
 li:hover {
     background-color: #b2dfdb; /* Slightly darker teal on hover */

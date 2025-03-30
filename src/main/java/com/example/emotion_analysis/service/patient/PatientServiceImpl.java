@@ -2,6 +2,7 @@ package com.example.emotion_analysis.service.patient;
 
 import com.example.emotion_analysis.dao.PatientRepository;
 import com.example.emotion_analysis.entity.Patient;
+import com.example.emotion_analysis.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -101,6 +103,16 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<Object[]> getSentimentPercentageByGender() {
         return patientRepository.findSentimentPercentageByGender();
+    }
+
+    @Override
+    public Optional<Patient> findByLastNameAndFirstName(String lastName, String firstName) {
+        return patientRepository.findByLastNameAndFirstName(lastName,firstName);
+    }
+
+    @Override
+    public List<Patient> findByUser(User user) {
+        return patientRepository.findByUser(user);
     }
 
 }

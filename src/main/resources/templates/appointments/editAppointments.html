@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap" >
-    <title>Patient Coonfiguration</title>
+    <title>Appointments Coonfiguration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
 
 <div class="container">
     <br>
-    <h3 style="text-align: center">Patients</h3>
+    <h3 style="text-align: center">Appoitments</h3>
     <hr>
 
     <!-- Success Message -->
@@ -31,45 +31,41 @@
         });
     </script>
 
-    <a th:href="@{/patients/addPatient}"
+    <a th:href="@{/appointments/addAppointment}"
        class="btn btn-primary btn-sm mb-3">
-        Add Patient
+        Add Appointment
     </a>
 
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
         <tr>
             <th>ID</th>
-            <th>Last name</th>
-            <th>First name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>City</th>
-            <th>Comment</th>
-            <th>Registration Date</th>
-            <th>Action</th>
+            <th>LAST NAME</th>
+            <th>FIRST NAME</th>
+            <th>DATE</th>
+            <th>EMAIL</th>
+            <th>TIME</th>
+            <th>ACTION</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="tempPatient : ${patients}">
+        <tr th:each="appointment : ${appointments}">
 
-            <td th:text="${tempPatient.id}"></td>
-            <td th:text="${tempPatient.lastName}"></td>
-            <td th:text="${tempPatient.firstName}"></td>
-            <td th:text="${tempPatient.age}"></td>
-            <td th:text="${tempPatient.gender}"></td>
-            <td th:text="${tempPatient.location.city}"></td> <!-- Correctly display city -->
-            <td th:text="${tempPatient.comment}"></td>
-            <td th:text="${tempPatient.formattedRegistrationDay}"></td>
+            <td th:text="${appointment.getId()}"></td>
+            <td th:text="${appointment.getLastName()}"></td>
+            <td th:text="${appointment.getName()}"></td>
+            <td th:text="${appointment.getNoteDate()}"></td>
+            <td th:text="${appointment.getEmail()}"></td>
+            <td th:text="${appointment.getTime()}"></td>
             <td>
-                <a th:href="@{/patients/showFormForUpdate(patientId=${tempPatient.id})}"
+                <a th:href="@{/appointments/update-form(appointmentId=${appointment.id})}"
                    class="btn btn-info btn-sm">
                     Update
                 </a>
-                <a th:href="@{/patients/deletePatient(patientId=${tempPatient.id})}"
+                <a th:href="@{/appointments/delete-form(appointmentId=${appointment.id})}"
                    class="btn btn-danger btn-sm"
-                   onclick="if (!(confirm('Are you sure you want to delete this patient?')))return false">
+                   onclick="if (!(confirm('Are you sure you want to delete this appointment?')))return false">
                     Delete
                 </a>
             </td>
@@ -77,10 +73,8 @@
         </tbody>
 
     </table>
-    <a th:if="${role == 'ADMIN'}"  th:href="@{/administration}" style="font-size: 25px;">Back to Administration</a>
-    <br><br>
-    <a th:if="${role == 'USER'}"  th:href="@{/welcome}" style="font-size: 25px;">Back Home</a>
-    <br><br><br>
+    <a th:if="${role == 'ADMIN'}" th:href="@{/welcome}" style="font-size: 25px;">Back</a>
+    <a th:if="${role == 'USER'}" th:href="@{/welcome}" style="font-size: 25px;">Home</a>
 </div>
 
 

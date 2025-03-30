@@ -13,10 +13,10 @@ public class CalendarNote {
 
     @Column(name = "note_date")
     private LocalDate noteDate;
-    
+
     @Column(name = "time")
     private String time;
-    
+
     @Column(name = "email")
     private String email;
 
@@ -83,6 +83,14 @@ public class CalendarNote {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Override

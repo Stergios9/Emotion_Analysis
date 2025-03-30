@@ -3,7 +3,7 @@
 <head>
     <title>Top 5 Most Frequent Sentiments</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/analysis.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -11,7 +11,15 @@
             text-align: center;
             margin-top: 20px;
         }
-
+        /*a.btn-return {*/
+        /*    display: inline-block;*/
+        /*    margin-top: 20px;*/
+        /*    background-color: #1A494D;*/
+        /*    color: white;*/
+        /*    text-decoration: none;*/
+        /*    padding: 10px 20px;*/
+        /*    border-radius: 5px;*/
+        /*}*/
         h1 {
             margin-bottom: 20px;
         }
@@ -30,24 +38,9 @@
         <button onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu-content">
 
-            <th:block th:if="${role == 'USER'}">
-                <a href="/welcome">HOME</a>
-                <a href="about">ABOUT</a>
-                <a href="/contact">CONTACT</a>
-                <a href="index">MEDICAL DIAGNOSIS</a>
-                <a href="/calendar">BOOK APPOINTMENT</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-                <a href="/logout">LOGOUT</a>
-            </th:block>
-
             <th:block th:if="${role == 'ADMIN'}">
                 <a href="/welcome">HOME</a>
-                <a href="/stats"  class="highlighted-text">STATISTICS</a>
-                <a href="/psychologists">PSYCHOLOGISTS PER LOCATION</a>
-                <a href="/patients">PATIENTS</a>
-                <a href="/stats/sentiment/dominant">MOST DOMINANT SENTIMENT</a>
-                <a href="/stats/sentiment/percentage">PERCENTANGE BY GENDER</a>
-                <a href="/logout">LOGOUT</a>
+
             </th:block>
 
         </div>
@@ -106,6 +99,7 @@
         }
     });
 </script>
+<a th:href="@{/stats}" class="btn-return">Back to Statistics</a>
 <footer>
     &copy; 2024 Emotion Analysis System. All rights reserved.
 </footer>

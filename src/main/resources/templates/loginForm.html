@@ -21,23 +21,29 @@
 <br><br>
 
 <!-- Success Message -->
+<!-- Success Message -->
 <div id="success-message" th:if="${successMessage}" class="alert alert-success w-50 mx-auto">
     <span th:text="${successMessage}"></span>
 </div>
 
+<!-- Error Message -->
+<div id="error-message" th:if="${errorMessage}" class="alert alert-danger w-50 mx-auto">
+    <span th:text="${errorMessage}"></span>
+</div>
+
 <script>
-    // Wait for the DOM to load
+    // Function to hide messages after a delay
     document.addEventListener("DOMContentLoaded", function() {
-        const successMessage = document.getElementById("success-message");
-        if (successMessage) {
-            // Set a timer to hide the message after 5 seconds
-            setTimeout(() => {
-                successMessage.style.display = "none";
-            }, 5000); // 5000 milliseconds = 5 seconds
-        }
+        ["success-message", "error-message"].forEach(id => {
+            const message = document.getElementById(id);
+            if (message) {
+                setTimeout(() => {
+                    message.style.display = "none";
+                }, 5000);
+            }
+        });
     });
 </script>
-
 
 <h1>Login</h1>
 <br>

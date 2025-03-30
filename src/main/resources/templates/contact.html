@@ -123,7 +123,7 @@
 
         <input type="hidden" th:field="*{id}" />
 
-    <div class="form-group">
+        <div class="form-group">
             <label class="form-label">Name:</label>
             <input type="text" class="form-control"  th:field="*{firstName}" required>
         </div>
@@ -147,7 +147,7 @@
     </form>
 
     <hr>
-    <a th:href="@{/welcome}" style="font-size: 20px; color: #136B64;">Back Home</a>
+    <a th:href="@{/welcome}" class="btn-return">Back Home</a>
 
 </div>
 

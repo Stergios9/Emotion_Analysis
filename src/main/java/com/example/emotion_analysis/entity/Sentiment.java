@@ -17,8 +17,8 @@ public class Sentiment {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "sentiments", cascade = CascadeType.ALL) // Specify the inverse side
-    private Set<Patient> patients = new HashSet<>(); // Initialize with an empty Set
+    @ManyToMany(mappedBy = "sentiments", cascade = CascadeType.ALL)
+    private Set<Patient> patients = new HashSet<>();
 
     public Sentiment() {}
 

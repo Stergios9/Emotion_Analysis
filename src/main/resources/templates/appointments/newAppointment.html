@@ -88,54 +88,52 @@
 
 <div class="container">
     <br>
-    <p class="h1 mb-4" style="text-align: center">New Patient</p>
 
-    <form action="#" th:action="@{/medicalDiagnosis}" th:object="${patient}" method="POST">
+    <p class="h1 mb-4" style="text-align: center" >New Appointment</p>
 
-        <input type="text" th:field="${patient.firstName}"
-               class="form-control mb-4 w-25" placeholder="First name">
+    <form action="#" th:action="@{/appointments/add}"
+          th:object="${appointment}" method="POST">
 
-        <input type="text" th:field="${patient.lastName}"
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <input type="text" th:field="*{name}"
+               class="form-control mb-4 w-25" placeholder="Name">
+
+        <input type="text" th:field="*{lastName}"
                class="form-control mb-4 w-25" placeholder="Last name">
 
-        <div class="mb-4">
-            <label for="age" class="form-label fw-bold">Age</label>
-            <input type="number"
-                   th:field="${patient.age}"
-                   id="age"
-                   class="form-control w-25"
-                   placeholder="Age">
-        </div>
+        <input type="date" th:field="*{noteDate}"
+               class="form-control mb-4 w-25" >
 
-        <div class="mb-4">
-            <label for="gender" class="form-label fw-bold">Gender</label>
-            <select th:field="${patient.gender}" id="gender" class="form-select w-25" required>
-                <option value="" disabled selected>Select Gender</option>
-                <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender}"></option>
+<!--        <input type="date" id="noteDate" class="form-control mb-4 w-25" th:field="*{noteDate}" placeholder="dd/mm/yyyy">-->
+<!--        <script>-->
+<!--            document.addEventListener("DOMContentLoaded", function () {-->
+<!--                let dateInput = document.getElementById("noteDate");-->
+<!--                dateInput.addEventListener("input", function () {-->
+<!--                   let value = dateInput.value.replace(/\D/g, ""); // Remove non-numeric characters-->
+<!--                    if (value.length >= 2) value = value.slice(0, 2) + "/" + value.slice(2);-->
+<!--                   if (value.length >= 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);-->
+<!--                   dateInput.value = value;-->
+<!--                });-->
+<!--            });-->
+<!--        </script>-->
 
-            </select>
-        </div>
 
-        <div class="mb-4">
-            <label for="location" class="form-label fw-bold">Location</label>
-            <select id="location" th:field="${patient.location}" class="form-select w-25" required>
-                <option value="" disabled selected>Select Location</option>
-                <option th:each="tempCity : ${cities}" th:value="${tempCity}" th:text="${tempCity}"></option>
-            </select>
-        </div>
+        <input type="text" th:field="*{email}"
+               class="form-control mb-4 w-25" placeholder="Email">
 
-        <div class="mb-4">
-            <label for="comment" class="form-label fw-bold">Patient's emotional description</label>
-            <input type="text" id="comment" name="comment" th:field="${patient.comment}"
-                   class="form-control mb-4 w-25" placeholder="Comment">
+        <input type="time" th:field="*{time}"
+               class="form-control mb-4 w-25"
+               min="09:00" max="18:00">
 
-        </div>
 
         <button type="submit" class="btn btn-info col-2">Save</button>
 
     </form>
     <hr>
-    <a th:href="@{/static}">Back to Login Form</a>
+    <a th:href="@{/appointments/list}" style="font-size: 25px;">Back to Appointment</a>
+
 </div>
 
 </body>

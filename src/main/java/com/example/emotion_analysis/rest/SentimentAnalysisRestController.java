@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
-@CrossOrigin(origins = "http://192.168.1.203:8080/")
+@CrossOrigin(origins = "http://192.168.1.203:8080/")// IpV4:31.217.174.81
 @Controller
 public class SentimentAnalysisRestController {
 
@@ -40,7 +41,8 @@ public class SentimentAnalysisRestController {
 
 
     @PostMapping("/medicalDiagnosis")
-    public String submitPatient(@RequestParam("firstName") String firstName,
+    public String submitPatient(
+                                @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
                                 @RequestParam("age") int age,
                                 @RequestParam("gender") String gender,
@@ -50,7 +52,9 @@ public class SentimentAnalysisRestController {
 
         // ✅ Ensure user exists in session
         User user = (User) session.getAttribute("user");
+        int patientId = user.getId();
         String form = "";
+
 
         if (user == null) {
             user = new User(); // Create new user if session expired
@@ -87,7 +91,8 @@ public class SentimentAnalysisRestController {
             Set<Sentiment> sentiments = new HashSet<>();
             sentiments.add(sentiment);
 
-            Patient patient = new Patient(firstName, lastName, age, gender, locationOfPatient, comment, LocalDateTime.now(), sentiments);
+
+            Patient patient = new Patient(firstName, lastName, age, gender, locationOfPatient, comment, LocalDateTime.now(), sentiments,user);
             patientService.save(patient);
 
             // Find diagnosis & relaxation techniques
@@ -98,6 +103,7 @@ public class SentimentAnalysisRestController {
             List<Psychologist> allPsychologists = psychologistService.findPsychologistsByLocation(locationOfPatient);
 
             // ✅ Add attributes to model
+            model.addAttribute("patientId",patientId);
             model.addAttribute("firstName", firstName);
             model.addAttribute("lastName", lastName);
             model.addAttribute("emotion", emotion);

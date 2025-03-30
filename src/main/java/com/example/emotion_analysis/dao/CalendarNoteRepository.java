@@ -22,6 +22,10 @@ public interface CalendarNoteRepository extends JpaRepository<CalendarNote, Inte
 
     boolean existsByName(String name);
 
+    CalendarNote findById(int id);
+
+    void deleteById(int id);
+
     @Modifying
     @Query("DELETE FROM CalendarNote cn WHERE cn.name = :name")
     void deleteByName(@Param("name") String name);

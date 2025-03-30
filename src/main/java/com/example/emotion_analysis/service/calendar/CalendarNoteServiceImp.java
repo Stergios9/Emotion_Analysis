@@ -30,6 +30,11 @@ public class CalendarNoteServiceImp implements CalendarNoteService {
     }
 
     @Override
+    public CalendarNote saveNote(CalendarNote calendarNote) {
+        return calendarNoteRepository.save(calendarNote);
+    }
+
+    @Override
     public List<CalendarNote> getNotesByDate(LocalDate date) {
         return calendarNoteRepository.findByNoteDate(date);
     }
@@ -43,6 +48,21 @@ public class CalendarNoteServiceImp implements CalendarNoteService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<CalendarNote> findAllAppointments() {
+        return calendarNoteRepository.findAll();
+    }
+
+    @Override
+    public CalendarNote findById(int id) {
+        return calendarNoteRepository.findById(id);
+    }
+
+    @Override
+    public void deleteNoteById(int id) {
+        calendarNoteRepository.deleteById(id);
     }
 
 }

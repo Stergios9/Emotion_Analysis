@@ -92,12 +92,8 @@ public class PsychologistController {
 
             model.addAttribute("psychologists", allPsychologists);
 
-            if (role.equals("ADMIN")) {
-                return "psychologists/editPsychologist"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
-            }
-            else if (role.equals("USER")) {
-                return "psychologists";
-            }
+            return "psychologists/editPsychologist"; // Το όνομα της σελίδας που θα εμφανίσει τη λίστα
+
         }
         model.addAttribute("error", "User not logged in. Please login to access this resource.");
         return "loginForm";

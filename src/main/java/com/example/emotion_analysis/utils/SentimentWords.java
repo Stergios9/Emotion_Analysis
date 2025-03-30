@@ -8,9 +8,9 @@ public class SentimentWords {
 
 
     public static final Set<String> ANXIOUS_WORDS = new HashSet<>(Arrays.asList(
-            "anxious", "stressed", "worried", "nervous", "tense", "uneasy",
+            "anxious", "stress", "worried", "nervous", "tense", "uneasy",
             "restless", "jittery", "agitated", "fretful","worry", "anxiety",
-            "panicky", "fraught", "distraught", "alarmed", "distressed","exhaust","exhausted","exhausting"
+            "panicky", "fraught", "distraught", "alarmed", "distressed","exhaust","exhausted","exhausting","crippling"
     ));
     public static final Set<String> FEARING_WORDS = new HashSet<>(Arrays.asList(
             "fear", "fright", "terror", "horror", "alarm", "panic", "dread", "trepidation", "apprehension",

@@ -4,43 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
   <style>
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 60%;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover, .close:focus {
-      color: black;
+    .btn-return {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #1A494D;
+      color: white;
       text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    .btn-return:hover {
+      background-color: #136B64;
     }
   </style>
-  <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/calendar.css}" />-->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/result.css}" />
+
 </head>
 <body>
 
@@ -57,6 +36,7 @@
 
       <th:block th:if="${role == 'ADMIN'}">
         <a href="/welcome">HOME</a>
+        <a href="/appointments/list">EDIT APPOINTMENTS</a>
         <a href="/logout">LOGOUT</a>
       </th:block>
 
@@ -142,6 +122,8 @@
   <!-- Confirm Button -->
   <button id="save-note" onclick="saveNote()" style="align-self: center; padding: 10px 20px; font-size: 16px; cursor: pointer;">Confirm</button>
 </div>
+<hr>
+<a href="/welcome" class="btn-return">Return to Home</a>
 
 
 <script src="/css/calendar2.js"></script>
